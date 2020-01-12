@@ -12,6 +12,7 @@ import frc.robot.subsystems.Intake;
 
 public class intakeInCommand extends CommandBase {
   private final Intake intakeMechanism;
+
   /**
    * Creates a new intakeInCommand.
    */
