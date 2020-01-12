@@ -12,9 +12,12 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.intakeInCommand;
-import frc.robot.commands.intakeOutCommand;
+import frc.robot.commands.ElevatorDownCommand;
+import frc.robot.commands.ElevatorUpCommand;
+import frc.robot.commands.IntakeInCommand;
+import frc.robot.commands.IntakeOutCommand;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -29,6 +32,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
+  private final Elevator elevator = new Elevator();
 
   public UniversalJoystick joystick = new UniversalJoystick(0);
 
@@ -51,11 +55,15 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton aJoystickButton = new JoystickButton(joystick, 1); //green light (Talon)
-    final JoystickButton bJoystickButton = new JoystickButton(joystick, 2); //red light (Talon)
+    final JoystickButton aJoystickButton = new JoystickButton(joystick, 1); // green light (Talon)
+    final JoystickButton bJoystickButton = new JoystickButton(joystick, 2); // red light (Talon)
+    final JoystickButton xJoystickButton = new JoystickButton(joystick, 3);
+    final JoystickButton yJoystickButton = new JoystickButton(joystick, 4);
 
-    aJoystickButton.whenHeld((Command) new intakeInCommand(intake));
-    bJoystickButton.whenHeld((Command) new intakeOutCommand(intake));
+    aJoystickButton.whenHeld((Command) new IntakeInCommand(intake));
+    bJoystickButton.whenHeld((Command) new IntakeOutCommand(intake));
+    xJoystickButton.whenHeld((Command) new ElevatorDownCommand(elevator));
+    yJoystickButton.whenHeld((Command) new ElevatorUpCommand(elevator));
   }
 
   /**
