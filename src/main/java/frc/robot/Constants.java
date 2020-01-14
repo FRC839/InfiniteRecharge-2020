@@ -26,8 +26,6 @@ public final class Constants {
     public static int TalonSRX04ID = 4;
     public static int TalonSRX05ID = 5;
     public static int TalonSRX06ID = 6;
-    public static int TalonSRX07ID = 7;
-    public static int TalonSRX08ID = 8;
 
     public static WPI_TalonSRX leftFront = new WPI_TalonSRX(TalonSRX02ID);
     public static WPI_TalonSRX leftFollower = new WPI_TalonSRX(TalonSRX01ID);
@@ -35,7 +33,5 @@ public final class Constants {
     public static WPI_TalonSRX rightFollower = new WPI_TalonSRX(TalonSRX05ID);
     public static WPI_TalonSRX intakeMotor = new WPI_TalonSRX(TalonSRX03ID);
     public static WPI_TalonSRX intakeFollowerTemp = new WPI_TalonSRX(TalonSRX04ID);
-    public static WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(TalonSRX07ID);
-    public static WPI_TalonSRX elevatorFollower = new WPI_TalonSRX(TalonSRX08ID);
 
 }
