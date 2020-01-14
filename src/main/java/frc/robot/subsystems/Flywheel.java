@@ -12,24 +12,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase {
+public class Flywheel extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  public Intake() {
-    Constants.intakeFollowerTemp.set(ControlMode.Follower, Constants.intakeFollowerTemp.getDeviceID());
-    addChild("intakeMotor", Constants.intakeMotor);
-  }
-
-  public void intakeIn() {
-    Constants.intakeMotor.set(1);
-  }
-
-  public void intakeOut() {
-    Constants.intakeMotor.set(-1);
-  }
-
-  public void intakeStop() {
-    Constants.intakeMotor.set(0);
+  public Flywheel() {
+    addChild("intakeMotor", Constants.flywheelMotor);
   }
 }

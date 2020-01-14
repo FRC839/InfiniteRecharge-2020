@@ -12,24 +12,24 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Intake extends SubsystemBase {
+public class Elevator extends SubsystemBase {
   /**
    * Creates a new Intake.
    */
-  public Intake() {
-    Constants.intakeFollowerTemp.set(ControlMode.Follower, Constants.intakeFollowerTemp.getDeviceID());
-    addChild("intakeMotor", Constants.intakeMotor);
+  public Elevator() {
+    Constants.elevatorFollower.set(ControlMode.Follower, Constants.elevatorMotor.getDeviceID());
+    addChild("elevatorMotor", Constants.elevatorMotor);
   }
 
-  public void intakeIn() {
-    Constants.intakeMotor.set(1);
+  public void elevatorUp() {
+    Constants.elevatorMotor.set(-1);
   }
 
-  public void intakeOut() {
-    Constants.intakeMotor.set(-1);
+  public void elevatorDown() {
+    Constants.elevatorMotor.set(1);
   }
 
-  public void intakeStop() {
-    Constants.intakeMotor.set(0);
+  public void elevatorStop() {
+    Constants.elevatorMotor.set(0);
   }
 }

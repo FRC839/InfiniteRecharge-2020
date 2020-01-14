@@ -17,7 +17,7 @@ public class Intake extends SubsystemBase {
    * Creates a new Intake.
    */
   public Intake() {
-    Constants.intakeFollowerTemp.set(ControlMode.Follower, Constants.intakeFollowerTemp.getDeviceID());
+    Constants.intakeFollowerTemp.set(ControlMode.Follower, Constants.intakeMotor.getDeviceID());
     addChild("intakeMotor", Constants.intakeMotor);
   }
 
