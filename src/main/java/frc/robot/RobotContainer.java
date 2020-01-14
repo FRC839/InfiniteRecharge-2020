@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.TankDrive;
-import frc.robot.commands.intakeInCommand;
+import frc.robot.commands.IntakeInCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
@@ -53,7 +53,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     final JoystickButton aJoystickButton = new JoystickButton(joystick, 1);
 
-    aJoystickButton.whenPressed( new intakeInCommand(intake));
+    aJoystickButton.whenPressed( new IntakeInCommand(intake));
   }
 
   /**
