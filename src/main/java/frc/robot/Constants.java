@@ -29,6 +29,10 @@ public final class Constants {
     public static int TalonSRX07ID = 7;
     public static int TalonSRX08ID = 8;
     public static int TalonSRX09ID = 9;
+    public static int TalonSRX10ID = 10;
+    public static int TalonSRX11ID = 11;
+    public static int TalonSRX12ID = 12;
+    public static int TalonSRX13ID = 13;
 
     public static WPI_TalonSRX leftFront = new WPI_TalonSRX(TalonSRX02ID);
     public static WPI_TalonSRX leftFollower = new WPI_TalonSRX(TalonSRX01ID);
@@ -36,9 +40,12 @@ public final class Constants {
     public static WPI_TalonSRX rightFollower = new WPI_TalonSRX(TalonSRX05ID);
     public static WPI_TalonSRX intakeMotor = new WPI_TalonSRX(TalonSRX03ID);
     public static WPI_TalonSRX intakeFollowerTemp = new WPI_TalonSRX(TalonSRX04ID);
-    public static WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(TalonSRX03ID);
-    public static WPI_TalonSRX elevatorFollower = new WPI_TalonSRX(TalonSRX04ID);
-    public static WPI_TalonSRX flywheelMotor = new WPI_TalonSRX(TalonSRX03ID);
-
+    public static WPI_TalonSRX elevatorMotor = new WPI_TalonSRX(TalonSRX07ID);
+    public static WPI_TalonSRX elevatorFollower = new WPI_TalonSRX(TalonSRX08ID);
+    public static WPI_TalonSRX flywheelMotor = new WPI_TalonSRX(TalonSRX09ID);
+    public static WPI_TalonSRX shooterMotor = new WPI_TalonSRX(TalonSRX10ID);
+    public static WPI_TalonSRX transportMotorStage1 = new WPI_TalonSRX(TalonSRX10ID);
+    public static WPI_TalonSRX transportMotorStage2 = new WPI_TalonSRX(TalonSRX10ID);
+    public static WPI_TalonSRX transportMotorStage3 = new WPI_TalonSRX(TalonSRX10ID);
 
 }
