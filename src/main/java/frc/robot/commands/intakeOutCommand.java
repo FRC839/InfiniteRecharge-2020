@@ -14,7 +14,7 @@ public class IntakeOutCommand extends CommandBase {
   private final Intake intakeMechanism;
 
   /**
-   * Creates a new intakeInCommand. test
+   * Creates a new intakeInCommand. new one
    */
   public IntakeOutCommand(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
