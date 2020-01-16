@@ -5,27 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
 
-public class ElevatorDownCommand extends CommandBase {
-  private final Elevator elevatorMechanism;
-
+public class IntakeInCommand extends CommandBase {
+  private final Intake intakeMechanism;
   /**
-   * Creates a new intakeInCommand.
+   * Creates a new intakeInCommand. test
    */
-  public ElevatorDownCommand(Elevator elevator) {
+  public IntakeInCommand(Intake intake) {
     // Use addRequirements() here to declare subsystem dependencies.
-    elevatorMechanism = elevator;
-    addRequirements(elevatorMechanism);
+    intakeMechanism = intake;
+    addRequirements(intakeMechanism);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorMechanism.elevatorDown();
+    intakeMechanism.intakeIn();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +35,7 @@ public class ElevatorDownCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorMechanism.elevatorStop();
+    intakeMechanism.intakeStop();
   }
 
   // Returns true when the command should end.

@@ -5,18 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Elevator;
 
-public class ElevatorUpCommand extends CommandBase {
+public class ElevatorDownCommand extends CommandBase {
   private final Elevator elevatorMechanism;
 
   /**
    * Creates a new intakeInCommand.
    */
-  public ElevatorUpCommand(Elevator elevator) {
+  public ElevatorDownCommand(Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     elevatorMechanism = elevator;
     addRequirements(elevatorMechanism);
@@ -25,7 +25,7 @@ public class ElevatorUpCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorMechanism.elevatorUp();
+    elevatorMechanism.elevatorDown();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
