@@ -12,7 +12,43 @@ import frc.robot.Constants;
 
 public class Transport extends SubsystemBase {
 
- public Transport() {
+    public Transport() {
 
- }
+    }
+
+    public void Stage1In() {
+        Constants.transportMotorStage1.set(1);
+    }
+
+    public void Stage1Out() {
+        Constants.transportMotorStage1.set(-1);
+    }
+
+    public void Stage1Stop() {
+        Constants.transportMotorStage1.set(0);
+    }
+
+    public void Stage2In() {
+        Constants.transportMotorStage2.set(1);
+    }
+
+    public void Stage2Out() {
+        Constants.transportMotorStage2.set(-1);
+    }
+
+    public void Stage2Stop() {
+        Constants.transportMotorStage2.set(0);
+    }
+
+    public void Stage3In() {
+        Constants.transportMotorStage3.set(1);
+    }
+
+    public void Stage3Out() {
+        Constants.transportMotorStage3.set(-1);
+    }
+
+    public void Stage3Stop() {
+        Constants.transportMotorStage3.set(0);
+    }
 }
