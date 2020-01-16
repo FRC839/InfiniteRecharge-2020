@@ -51,9 +51,22 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton aJoystickButton = new JoystickButton(joystick, 1);
+    final JoystickButton aBtn       = new JoystickButton(joystick, 1);
+    final JoystickButton bBtn       = new JoystickButton(joystick, 2);
+    final JoystickButton xBtn       = new JoystickButton(joystick, 3);
+    final JoystickButton yBtn       = new JoystickButton(joystick, 4);
+    final JoystickButton LBBtn      = new JoystickButton(joystick, 5);
+    final JoystickButton RBBtn      = new JoystickButton(joystick, 6);
+    final JoystickButton BackBtn    = new JoystickButton(joystick, 7);
+    final JoystickButton StartBtn   = new JoystickButton(joystick, 8);
+    final JoystickButton LStickBtn  = new JoystickButton(joystick, 9);
+    final JoystickButton RStickBtn  = new JoystickButton(joystick, 10);
+    final JoystickButton LTBtn      = new JoystickButton(joystick, 11);
+    final JoystickButton RTBtn      = new JoystickButton(joystick, 12);
+    final JoystickButton ModeABtn   = new JoystickButton(joystick, 13);
+    final JoystickButton ModeBBtn   = new JoystickButton(joystick, 14);
 
-    aJoystickButton.whenPressed( new IntakeInCommand(intake));
+    aBtn.whenPressed(new IntakeInCommand(intake));
   }
 
   /**
