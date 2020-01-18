@@ -5,27 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.flywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Flywheel;
 
-public class ElevatorUpCommand extends CommandBase {
-  private final Elevator elevatorMechanism;
-
+public class FlywheelForwardCommand extends CommandBase {
+  private final Flywheel flywheelMechanism;
   /**
-   * Creates a new intakeInCommand.
+   * Creates a new intakeInCommand. test
    */
-  public ElevatorUpCommand(Elevator elevator) {
+  public FlywheelForwardCommand(Flywheel flywheel) {
     // Use addRequirements() here to declare subsystem dependencies.
-    elevatorMechanism = elevator;
-    addRequirements(elevatorMechanism);
+    flywheelMechanism = flywheel;
+    addRequirements(flywheelMechanism);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorMechanism.elevatorUp();
+    flywheelMechanism.FlywheelForward();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +35,7 @@ public class ElevatorUpCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorMechanism.elevatorStop();
+    flywheelMechanism.FlywheelStop();
   }
 
   // Returns true when the command should end.

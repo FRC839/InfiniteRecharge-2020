@@ -5,27 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.hood;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Hood;
 
-public class ElevatorDownCommand extends CommandBase {
-  private final Elevator elevatorMechanism;
-
+public class HoodUpCommand extends CommandBase {
+  private final Hood hoodMechanism;
   /**
-   * Creates a new intakeInCommand.
+   * Creates a new intakeInCommand. test
    */
-  public ElevatorDownCommand(Elevator elevator) {
+  public HoodUpCommand(Hood hood) {
     // Use addRequirements() here to declare subsystem dependencies.
-    elevatorMechanism = elevator;
-    addRequirements(elevatorMechanism);
+    hoodMechanism = hood;
+    addRequirements(hoodMechanism);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorMechanism.elevatorDown();
+    hoodMechanism.HoodUp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +35,7 @@ public class ElevatorDownCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorMechanism.elevatorStop();
+    hoodMechanism.HoodStop();
   }
 
   // Returns true when the command should end.

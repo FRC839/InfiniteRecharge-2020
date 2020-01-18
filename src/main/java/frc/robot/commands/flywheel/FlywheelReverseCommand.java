@@ -5,26 +5,26 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.flywheel;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Flywheel;
 
-public class IntakeInCommand extends CommandBase {
-  private final Intake intakeMechanism;
+public class FlywheelReverseCommand extends CommandBase {
+  private final Flywheel flywheelMechanism;
   /**
    * Creates a new intakeInCommand. test
    */
-  public IntakeInCommand(Intake intake) {
+  public FlywheelReverseCommand(Flywheel flywheel) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeMechanism = intake;
-    addRequirements(intakeMechanism);
+    flywheelMechanism = flywheel;
+    addRequirements(flywheelMechanism);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeMechanism.intakeIn();
+    flywheelMechanism.FlywheelReverse();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class IntakeInCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeMechanism.intakeStop();
+    flywheelMechanism.FlywheelStop();
   }
 
   // Returns true when the command should end.

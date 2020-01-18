@@ -7,36 +7,27 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends Subsystem {
+public class Hood extends SubsystemBase {
 
     // unsure on what to change initDefaultCommand, setDefaultCommand, Forward,
     // Reverse, and Stop into.
-    public Shooter() {
+    public Hood() {
 
-        SpeedController shooterMotor = Constants.shooterMotor;
     }
 
-    public void Forward() {
-        Constants.shooterMotor.set(1);
+    public void HoodUp() {
+        Constants.hoodMotor.set(0.5);
     }
 
-    public void Reverse() {
+    public void HoodDown() {
 
-        Constants.shooterMotor.set(-1);
+        Constants.hoodMotor.set(-0.5);
     }
 
-    public void Stop() {
-        Constants.shooterMotor.set(0);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
-
+    public void HoodStop() {
+        Constants.hoodMotor.set(0);
     }
 }
