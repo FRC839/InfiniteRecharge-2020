@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.TankDrive;
 import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Flywheel;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 

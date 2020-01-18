@@ -7,9 +7,7 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends Subsystem {
@@ -18,7 +16,6 @@ public class Shooter extends Subsystem {
     // Reverse, and Stop into.
     public Shooter() {
 
-        SpeedController shooterMotor = Constants.shooterMotor;
     }
 
     public void Forward() {
