@@ -33,6 +33,7 @@ public final class Constants {
     public static int TalonSRX11ID = 11;
     public static int TalonSRX12ID = 12;
     public static int TalonSRX13ID = 13;
+    public static int TalonSRX14ID = 14;
 
     public static WPI_TalonSRX leftFront = new WPI_TalonSRX(TalonSRX02ID);
     public static WPI_TalonSRX leftFollower = new WPI_TalonSRX(TalonSRX01ID);
@@ -47,5 +48,6 @@ public final class Constants {
     public static WPI_TalonSRX transportMotorStage1 = new WPI_TalonSRX(TalonSRX10ID);
     public static WPI_TalonSRX transportMotorStage2 = new WPI_TalonSRX(TalonSRX10ID);
     public static WPI_TalonSRX transportMotorStage3 = new WPI_TalonSRX(TalonSRX10ID);
+    public static WPI_TalonSRX hoodMotor = new WPI_TalonSRX(TalonSRX14ID);
 
 }

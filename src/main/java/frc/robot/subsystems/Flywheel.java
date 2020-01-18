@@ -7,33 +7,27 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-public class Shooter extends Subsystem {
+public class Flywheel extends SubsystemBase {
 
     // unsure on what to change initDefaultCommand, setDefaultCommand, Forward,
     // Reverse, and Stop into.
-    public Shooter() {
+    public Flywheel() {
 
     }
 
-    public void Forward() {
+    public void FlywheelForward() {
         Constants.shooterMotor.set(1);
     }
 
-    public void Reverse() {
+    public void FlywheelReverse() {
 
         Constants.shooterMotor.set(-1);
     }
 
-    public void Stop() {
+    public void FlywheelStop() {
         Constants.shooterMotor.set(0);
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        // TODO Auto-generated method stub
-
     }
 }
