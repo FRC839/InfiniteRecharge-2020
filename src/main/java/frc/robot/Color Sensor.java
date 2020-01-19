@@ -6,7 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 
-package org.usfirst.frc.team7034.robot;
+package frc.robot;
 import edu.wpi.first.wpilibj.I2C;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -80,7 +80,8 @@ public int status() {
 }
 
 public void free() {
-	sensor.free();
+    sensor.free();
+   } 
 }
 
 /*package org.usfirst.frc.team7034.robot;
