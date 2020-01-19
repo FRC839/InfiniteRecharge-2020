@@ -37,7 +37,7 @@
 
 
 // private I2C sensor;
-
+                                                                                                                                                                 
 // private ByteBuffer buffy = ByteBuffer.allocate(8);
 
 // public short red = 0, green = 0, blue = 0, prox = 0;
