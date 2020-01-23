@@ -10,11 +10,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.TankDrive;
-import frc.robot.commands.IntakeInCommand;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Flywheel;
-import frc.robot.subsystems.Intake;
+import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.commands.intake.IntakeInCommand;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /**
@@ -28,7 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
-  private final Flywheel flywheel = new Flywheel();
+  // private final Flywheel flywheel = new Flywheel();
 
   public UniversalJoystick joystick = new UniversalJoystick(0);
 
@@ -51,9 +49,22 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    final JoystickButton aJoystickButton = new JoystickButton(joystick, 1);
+    final JoystickButton aBtn = new JoystickButton(joystick, 1);
+    // final JoystickButton bBtn = new JoystickButton(joystick, 2);
+    // final JoystickButton xBtn = new JoystickButton(joystick, 3);
+    // final JoystickButton yBtn = new JoystickButton(joystick, 4);
+    // final JoystickButton LBBtn = new JoystickButton(joystick, 5);
+    // final JoystickButton RBBtn = new JoystickButton(joystick, 6);
+    // final JoystickButton BackBtn = new JoystickButton(joystick, 7);
+    // final JoystickButton StartBtn = new JoystickButton(joystick, 8);
+    // final JoystickButton LStickBtn = new JoystickButton(joystick, 9);
+    // final JoystickButton RStickBtn = new JoystickButton(joystick, 10);
+    // final JoystickButton LTBtn = new JoystickButton(joystick, 11);
+    // final JoystickButton RTBtn = new JoystickButton(joystick, 12);
+    // final JoystickButton ModeABtn = new JoystickButton(joystick, 13);
+    // final JoystickButton ModeBBtn = new JoystickButton(joystick, 14);
 
-    aJoystickButton.whenPressed( new IntakeInCommand(intake));
+    aBtn.whenPressed(new IntakeInCommand(intake));
   }
 
   /**

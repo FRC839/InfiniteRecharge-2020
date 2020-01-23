@@ -5,26 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.transport;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Transport;
 
-public class IntakeInCommand extends CommandBase {
-  private final Intake intakeMechanism;
+public class Stage1InCommand extends CommandBase {
+
+  private final Transport transportStage1;
+
   /**
-   * Creates a new intakeInCommand. test
+   * Creates a new Stage1InCommand.
    */
-  public IntakeInCommand(Intake intake) {
+  public Stage1InCommand(Transport transport) {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeMechanism = intake;
-    addRequirements(intakeMechanism);
+    transportStage1 = transport;
+    addRequirements(transportStage1);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeMechanism.intakeIn();
+    transportStage1.Stage1In();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +37,7 @@ public class IntakeInCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    intakeMechanism.intakeStop();
+    transportStage1.Stage1Stop();
   }
 
   // Returns true when the command should end.

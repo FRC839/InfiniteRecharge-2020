@@ -5,27 +5,28 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.transport;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Transport;
 
-public class ElevatorUpCommand extends CommandBase {
-  private final Elevator elevatorMechanism;
+public class Stage2InCommand extends CommandBase {
+
+  private final Transport transportStage2;
 
   /**
-   * Creates a new intakeInCommand.
+   * Creates a new Stage1InCommand.
    */
-  public ElevatorUpCommand(Elevator elevator) {
+  public Stage2InCommand(Transport transport) {
     // Use addRequirements() here to declare subsystem dependencies.
-    elevatorMechanism = elevator;
-    addRequirements(elevatorMechanism);
+    transportStage2 = transport;
+    addRequirements(transportStage2);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    elevatorMechanism.elevatorUp();
+    transportStage2.Stage2In();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -36,7 +37,7 @@ public class ElevatorUpCommand extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorMechanism.elevatorStop();
+    transportStage2.Stage2Stop();
   }
 
   // Returns true when the command should end.
