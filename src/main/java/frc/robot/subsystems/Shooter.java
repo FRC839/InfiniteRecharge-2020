@@ -7,39 +7,39 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-    public class Shooter extends Subsystem 
-    {
-
-
-      public Shooter() {
-
-         SpeedController shooterMotor = Constants.shooterMotor;
+public class Shooter extends Subsystem 
+{
+   public Shooter() {
          
-         // Put methods for controlling this subsystem
-         // here. Call these from Commands.
-         public void initDefaultCommand() 
-         {
-             // Set the default command for a subsystem here.
-             setDefaultCommand(new Shooter());
+      SpeedController shooterMotor = Constants.shooterMotor;
+                  
+      // Put methods for controlling this subsystem
+      // here. Call these from Commands.
+      public void initDefaultCommand() 
+      {
+         // Set the default command for a subsystem here.
+         setDefaultCommand(new Shooter());
          }
-         
+                  
          public void Forward() {
          {
             shooterMotor.set( 1 );
          }
-         
+                  
          public void Reverse()
          {
             shooterMotor.set( -1 );
          }
-         
+                  
          public void Stop()
          {
             shooterMotor.set( 0 );
          }
-        }
-     }
-    }
+      }
+   }
+}
