@@ -28,16 +28,6 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   public static DriveTrain drivetrain;
   public static Limelight limelight;
-  public static LimelightData limelightData;
-
-  public final double kP = 0;
-  public final double kI = 0;
-  public final double kD = 0;
-
-  TalonSRXFeedbackDevice encoder;
-
-  // Creates a PIDController with gains kP, kI, and kD
-  PIDController pid = new PIDController(kP, kI, kD);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -71,19 +61,6 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     m_robotContainer.limelight.getLimeLightValues();
-
-    // Calculates the output of the PID algorithm based on the sensor reading
-    // and sends it to a motor
-    Constants.leftFront.set(pid.calculate(limelightData.getError(), 0));
-    Constants.rightFront.set(pid.calculate(limelightData.getError(), 0));
-
-    // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
-    // second
-    pid.setTolerance(2, 10);
-
-    // Returns true if the error is less than 5 units, and the
-    // error derivative is less than 10 units
-    pid.atSetpoint();
   }
 
   /**

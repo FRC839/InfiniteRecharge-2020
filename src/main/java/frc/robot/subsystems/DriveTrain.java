@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightData;
 
 public class DriveTrain extends SubsystemBase {
   /*
@@ -22,10 +23,20 @@ public class DriveTrain extends SubsystemBase {
    * the robots chassis. These include four drive motors, a left and right encoder
    * and a gyro.
    */
+
+  public static LimelightData limelightData;
+
   public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonSRX(2), new WPI_TalonSRX(1));
   public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonSRX(6), new WPI_TalonSRX(5));
 
   private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
+
+  public final double kP = 0;
+  public final double kI = 0;
+  public final double kD = 0;
+
+  // Creates a PIDController with gains kP, kI, and kD
+  PIDController pid = new PIDController(kP, kI, kD);
 
   // private final Encoder m_leftEncoder = new Encoder(1, 2);
   // private final Encoder m_rightEncoder = new Encoder(3, 4);
@@ -37,6 +48,19 @@ public class DriveTrain extends SubsystemBase {
    */
   public DriveTrain() {
     super();
+
+    // Calculates the output of the PID algorithm based on the sensor reading
+    // and sends it to a motor
+    Constants.leftFront.set(pid.calculate(limelightData.getError(), 0));
+    Constants.rightFront.set(pid.calculate(limelightData.getError(), 0));
+
+    // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
+    // second
+    pid.setTolerance(2, 10);
+
+    // Returns true if the error is less than 5 units, and the
+    // error derivative is less than 10 units
+    pid.atSetpoint();
 
     // Encoders may measure differently in the real world and in
     // simulation. In this example the robot moves 0.042 barleycorns

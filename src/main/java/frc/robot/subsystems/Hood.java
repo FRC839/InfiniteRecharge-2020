@@ -10,36 +10,24 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
-    public class Shooter extends Subsystem 
-    {
+public class Hood extends SubsystemBase {
 
+    // unsure on what to change initDefaultCommand, setDefaultCommand, Forward,
+    // Reverse, and Stop into.
+    public Hood() {
 
-      public Shooter() {
-
-         SpeedController shooterMotor = Constants.shooterMotor;
-         
-         // Put methods for controlling this subsystem
-         // here. Call these from Commands.
-         public void initDefaultCommand() 
-         {
-             // Set the default command for a subsystem here.
-             setDefaultCommand(new Shooter());
-         }
-         
-         public void Forward() {
-         {
-            shooterMotor.set( 1 );
-         }
-         
-         public void Reverse()
-         {
-            shooterMotor.set( -1 );
-         }
-         
-         public void Stop()
-         {
-            shooterMotor.set( 0 );
-         }
-        }
-     }
     }
+
+    public void HoodUp() {
+        Constants.hoodMotor.set(0.5);
+    }
+
+    public void HoodDown() {
+
+        Constants.hoodMotor.set(-0.5);
+    }
+
+    public void HoodStop() {
+        Constants.hoodMotor.set(0);
+    }
+} 
