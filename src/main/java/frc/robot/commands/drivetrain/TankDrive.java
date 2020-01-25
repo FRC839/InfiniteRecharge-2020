@@ -18,8 +18,8 @@ import frc.robot.subsystems.DriveTrain;
  */
 public class TankDrive extends CommandBase {
   private final DriveTrain driveTrain;
-  private final DoubleSupplier kLeft;
-  private final DoubleSupplier kRight;
+  public final DoubleSupplier kLeft;
+  public final DoubleSupplier kRight;
 
   /**
    * Creates a new TankDrive command.

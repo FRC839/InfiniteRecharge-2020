@@ -7,13 +7,11 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.LimelightData;
 
 /**
  * Add your docs here.
@@ -22,21 +20,25 @@ public class Limelight {
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-rosie");
 
-    public void log() {
+    public LimelightData getLimeLightValues() {
         // post to smart dashboard periodically
-        System.out.println("TEST TEST TEST");
+        // System.out.println("SOUR ILLUMINATION");
 
         NetworkTableEntry tx = table.getEntry("tx");
         NetworkTableEntry ty = table.getEntry("ty");
         NetworkTableEntry ta = table.getEntry("ta");
 
-        // read values periodically
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
+        LimelightData data = new LimelightData(tx.getDouble(0.0), ty.getDouble(0.0), ta.getDouble(0.0));
 
-        SmartDashboard.putNumber("LimelightX", x);
-        SmartDashboard.putNumber("LimelightY", y);
-        SmartDashboard.putNumber("LimelightArea", area);
+        // // read values periodically
+        // double x = tx.getDouble(0.0);
+        // double y = ty.getDouble(0.0);
+        // double area = ta.getDouble(0.0);
+
+        SmartDashboard.putNumber("LimelightX", data.x);
+        SmartDashboard.putNumber("LimelightY", data.y);
+        SmartDashboard.putNumber("LimelightArea", data.area);
+
+        return data;
     }
 }

@@ -11,8 +11,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /*
@@ -20,8 +22,8 @@ public class DriveTrain extends SubsystemBase {
    * the robots chassis. These include four drive motors, a left and right encoder
    * and a gyro.
    */
-  private final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonSRX(2), new WPI_TalonSRX(1));
-  private final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonSRX(6), new WPI_TalonSRX(5));
+  public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonSRX(2), new WPI_TalonSRX(1));
+  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonSRX(6), new WPI_TalonSRX(5));
 
   private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
 
@@ -75,8 +77,16 @@ public class DriveTrain extends SubsystemBase {
    * @param left  Speed in range [-1,1]
    * @param right Speed in range [-1,1]
    */
-  public void drive(double left, double right) {
+  public void drive(final double left, final double right) {
     drive.tankDrive(left, right);
+  }
+
+  public void turnLeft() {
+    drive.tankDrive(0.60, -0.60);
+  }
+
+  public void turnRight() {
+    drive.tankDrive(-0.60, 0.60);
   }
 
   /**

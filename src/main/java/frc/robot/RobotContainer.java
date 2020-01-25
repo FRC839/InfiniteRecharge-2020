@@ -7,11 +7,14 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.TankDrive;
 import frc.robot.commands.intake.IntakeInCommand;
+import frc.robot.commands.drivetrain.LightFollow;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -24,8 +27,8 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final DriveTrain driveTrain = new DriveTrain();
-  private final Intake intake = new Intake();
+  public final DriveTrain driveTrain = new DriveTrain();
+  public final Intake intake = new Intake();
   public final Limelight limelight = new Limelight();
   // private final Flywheel flywheel = new Flywheel();
 
@@ -65,7 +68,7 @@ public class RobotContainer {
     // final JoystickButton ModeABtn = new JoystickButton(joystick, 13);
     // final JoystickButton ModeBBtn = new JoystickButton(joystick, 14);
 
-    aBtn.whenPressed(new IntakeInCommand(intake));
+    aBtn.whileHeld(new LightFollow(driveTrain));
   }
 
   /**
