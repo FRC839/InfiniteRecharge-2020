@@ -26,6 +26,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final DriveTrain driveTrain = new DriveTrain();
   private final Intake intake = new Intake();
+  public final Limelight limelight = new Limelight();
   // private final Flywheel flywheel = new Flywheel();
 
   public UniversalJoystick joystick = new UniversalJoystick(0);

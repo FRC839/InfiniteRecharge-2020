@@ -1,11 +1,21 @@
+<<<<<<< HEAD
 +/*----------------------------------------------------------------------------*/
 /* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
+=======
+/*----------------------------------------------------------------------------*/
+/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+<<<<<<< HEAD
 package org.usfirst.frc.team7034.robot;
+=======
+
+package frc.robot;
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
 import edu.wpi.first.wpilibj.I2C;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -14,9 +24,15 @@ public class ColorSensor {
 protected final static int CMD = 0x80;
 protected final static int MULTI_BYTE_BIT = 0x20;
 
+<<<<<<< HEAD
 protected final static int ENABLE_REGISTER = 0x00;
 protected final static int ATIME_REGISTER  = 0x01;
 protected final static int PPULSE_REGISTER = 0X0e;
+=======
+protected final static int ENABLE_REGISTER  = 0x00;
+protected final static int ATIME_REGISTER   = 0x01;
+protected final static int PPULSE_REGISTER  = 0x0E;
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
 
 protected final static int ID_REGISTER     = 0x12;
 protected final static int CDATA_REGISTER  = 0x14;
@@ -36,6 +52,7 @@ private final double integrationTime = 10;
 
 
 private I2C sensor;
+<<<<<<< HEAD
 
 private ByteBuffer buffy = ByteBuffer.allocate(8);
 
@@ -60,6 +77,53 @@ public void read() {
 
 
 }
+=======
+                                                                                                                                                                 
+private ByteBuffer buffy = ByteBuffer.allocate(8);
+
+public short red = 0, green = 0, blue = 0, prox = 0;
+
+public ColorSensor(I2C.Port port) {
+	buffy.order(ByteOrder.LITTLE_ENDIAN);
+    sensor = new I2C(port, 0x39); //0x39 is the address of the Vex ColorSensor V2
+    
+    sensor.write(CMD | 0x00, PON | AEN | PEN);
+    
+    sensor.write(CMD | 0x01, (int) (256-integrationTime/2.38)); //configures the integration time (time for updating color data)
+    sensor.write(CMD | 0x0E, 0b1111);
+    
+}
+
+
+
+public void read() {
+	buffy.clear();
+    sensor.read(CMD | MULTI_BYTE_BIT | RDATA_REGISTER, 8, buffy);
+    
+    red = buffy.getShort(0);
+    if(red < 0) { red += 0b10000000000000000; }
+    
+    green = buffy.getShort(2);
+    if(green < 0) { green += 0b10000000000000000; }
+    
+    blue = buffy.getShort(4); 
+    if(blue < 0) { blue += 0b10000000000000000; }
+    
+    prox = buffy.getShort(6); 
+    if(prox < 0) { prox += 0b10000000000000000; }
+    
+}
+
+public int status() {
+	buffy.clear();
+	sensor.read(CMD | 0x13, 1, buffy);
+	return buffy.get(0);
+}
+
+public void free() {
+    sensor.free();
+   } 
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
 }
 
 /*package org.usfirst.frc.team7034.robot;
@@ -72,8 +136,12 @@ public class ColorSensor{
     I2C sensor;
     public ColorSensor(){
         sensor = new I2C(I2C.Port.kOnboard, 0x39); //0x39 is the sensor's i2c address
+<<<<<<< HEAD
         sensor.write(0x00, 192); //0b11000000 ... Power on, color sensor on. (page 20 of sensor database0
 
+=======
+        sensor.write(0x00, 192); //0b11000000 ... Power on, color sensor on. (page 20 of sensor datasheet)
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
     }
     public int red(){
         sensor.read(0x16, 1, buffer);
@@ -83,8 +151,17 @@ public class ColorSensor{
         sensor.read(0x18, 1, buffer);
         return buffer.get(0);
     }
+<<<<<<< HEAD
     public int yellow(){
         sensor.read(0x18, 1, buffer);
+=======
+    public int blue(){
+        sensor.read(0x1A, 1, buffer);
+        return buffer.get(0);
+    }
+    public int yellow(){
+        sensor.read(0x1, 1, buffer);
+>>>>>>> 9e2efb98f2b3afa35450cf435cbc671930e18a2b
         return buffer.get(0);
     }
     //Blue 100 0 0 0
