@@ -7,15 +7,18 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightData;
+// import java.lang.Math;
 
 public class DriveTrain extends SubsystemBase {
   /*
@@ -24,16 +27,16 @@ public class DriveTrain extends SubsystemBase {
    * and a gyro.
    */
 
-  public static LimelightData limelightData;
+  public static Limelight m_limelight;
 
   public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonSRX(2), new WPI_TalonSRX(1));
   public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonSRX(6), new WPI_TalonSRX(5));
 
   private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
 
-  public final double kP = 0;
-  public final double kI = 0;
-  public final double kD = 0;
+  public final double kP = 0.750;
+  public final double kI = 0.000;
+  public final double kD = 0.000;
 
   // Creates a PIDController with gains kP, kI, and kD
   PIDController pid = new PIDController(kP, kI, kD);
@@ -46,21 +49,13 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Create a new drive train subsystem.
    */
-  public DriveTrain() {
+  public DriveTrain(Limelight limelight) {
     super();
 
-    // Calculates the output of the PID algorithm based on the sensor reading
-    // and sends it to a motor
-    Constants.leftFront.set(pid.calculate(limelightData.getError(), 0));
-    Constants.rightFront.set(pid.calculate(limelightData.getError(), 0));
+    m_limelight = limelight;
 
-    // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
-    // second
-    pid.setTolerance(2, 10);
-
-    // Returns true if the error is less than 5 units, and the
-    // error derivative is less than 10 units
-    pid.atSetpoint();
+    Constants.leftFollower.set(ControlMode.Follower,Constants.leftFollower.getDeviceID());
+    Constants.rightFollower.set(ControlMode.Follower,Constants.rightFollower.getDeviceID());
 
     // Encoders may measure differently in the real world and in
     // simulation. In this example the robot moves 0.042 barleycorns
@@ -106,11 +101,44 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void turnLeft() {
-    drive.tankDrive(0.60, -0.60);
+    // drive.tankDrive(0.60, -0.60);
+    // Calculates the output of the PID algorithm based on the sensor reading
+    // and sends it to a motor
+
+    LimelightData limelightData = m_limelight.getLimeLightValues();
+    Constants.leftFront.set(pid.calculate(limelightData.getNegMotorPower(), 0));
+    Constants.rightFront.set(pid.calculate(limelightData.getPosMotorPower(), 0));
+    // // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
+    // // second
+    // pid.setTolerance(2, 10);
+
+    // // Returns true if the error is less than 2 units, and the
+    // // error derivative is less than 10 units
+    // pid.atSetpoint();
+    SmartDashboard.putNumber("leftFront", Constants.leftFront.get());
+    SmartDashboard.putNumber("leftFollower", Constants.leftFollower.get());
+    SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
+    SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
   }
 
   public void turnRight() {
-    drive.tankDrive(-0.60, 0.60);
+    // drive.tankDrive(-0.60, 0.60);
+    // Calculates the output of the PID algorithm based on the sensor reading
+    // and sends it to a motor
+    LimelightData limelightData = m_limelight.getLimeLightValues();
+    Constants.leftFront.set(pid.calculate(limelightData.getPosMotorPower(), 0));
+    Constants.rightFront.set(pid.calculate(limelightData.getNegMotorPower(), 0));
+    // // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
+    // // second
+    // pid.setTolerance(2, 10);
+
+    // // Returns true if the error is less than 5 units, and the
+    // // error derivative is less than 10 units
+    // pid.atSetpoint();
+    SmartDashboard.putNumber("leftFront", Constants.leftFront.get());
+    SmartDashboard.putNumber("leftFollower", Constants.leftFollower.get());
+    SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
+    SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
   }
 
   /**

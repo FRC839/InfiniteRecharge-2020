@@ -37,12 +37,12 @@ public class LightFollow extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    System.out.println("LightFollow.execute()");
+    // System.out.println("LightFollow.execute()");
     LimelightData data = limeLight.getLimeLightValues();
-    if (data.x < 0) {
+    if (data.x < -2) {
       driveTrain.turnRight();
     }
-    if (data.x > 0) {
+    if (data.x > 2) {
       driveTrain.turnLeft();
     }
   }

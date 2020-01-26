@@ -27,9 +27,9 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final DriveTrain driveTrain = new DriveTrain();
-  public final Intake intake = new Intake();
   public final Limelight limelight = new Limelight();
+  public final DriveTrain driveTrain = new DriveTrain(limelight);
+  public final Intake intake = new Intake();
   // private final Flywheel flywheel = new Flywheel();
 
   public UniversalJoystick joystick = new UniversalJoystick(0);

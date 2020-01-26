@@ -14,6 +14,8 @@ public class LimelightData {
     public double x = 0;
     public double y = 0;
     public double area = 0;
+    public double Xneg;
+    public double Xpos;
 
     public LimelightData(double _x, double _y, double _area) {
         x = _x;
@@ -21,7 +23,19 @@ public class LimelightData {
         area = _area;
     }
 
-    public double getError() {
-        return x;
+    public double getNegMotorPower() {
+        Xneg = (-Math.abs(x));
+        if (Xneg < -1) {
+            Xneg = -1;
+        }
+        return Xneg;
+    }
+
+    public double getPosMotorPower() {
+        Xpos = (Math.abs(x));
+        if (Xpos > 1) {
+            Xpos = 1;
+        }
+        return Xpos;
     }
 }
