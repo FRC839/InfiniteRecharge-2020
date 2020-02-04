@@ -9,9 +9,12 @@ package frc.robot.commands.drivetrain;
 
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 import frc.robot.subsystems.DriveTrain;
+
+import frc.robot.Constants;
 
 /**
  * Have the robot drive tank style.
@@ -20,6 +23,8 @@ public class TankDrive extends CommandBase {
   private final DriveTrain driveTrain;
   public final DoubleSupplier kLeft;
   public final DoubleSupplier kRight;
+  // public int TalonFX04Rotations;
+  // public double rightFrontMotorSensorValue = Constants.rightFront.getSelectedSensorPosition();
 
   /**
    * Creates a new TankDrive command.
@@ -35,10 +40,24 @@ public class TankDrive extends CommandBase {
     addRequirements(drivetrain);
   }
 
+  public double getTalonFX04Rotations() {
+    double FX04Raw = Constants.rightFront.getSelectedSensorPosition();
+    double FX04Rot = FX04Raw / 2048;
+    return FX04Rot;
+  }
+
+  public double getTalonFX04RPM() {
+    double FX04RPMRaw = Constants.rightFront.getSelectedSensorVelocity();
+    double FX04RPM = FX04RPMRaw * 1000 * 60 / 100 / 2048;
+    return FX04RPM;
+  }
+
   // Called repeatedly when this Command is scheduled to run
   @Override
   public void execute() {
     driveTrain.drive(-kLeft.getAsDouble(), -kRight.getAsDouble());
+    SmartDashboard.putNumber("FX04Rot", getTalonFX04Rotations());
+    SmartDashboard.putNumber("FX04RPM", getTalonFX04RPM());
   }
 
   // Make this return true when this Command no longer needs to run execute()

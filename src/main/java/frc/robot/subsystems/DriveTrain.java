@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.SpeedController;
@@ -18,6 +20,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightData;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import java.lang.Math;
 
 public class DriveTrain extends SubsystemBase {
@@ -29,8 +34,9 @@ public class DriveTrain extends SubsystemBase {
 
   public static Limelight m_limelight;
 
-  public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonSRX(2), new WPI_TalonSRX(1));
-  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonSRX(6), new WPI_TalonSRX(5));
+  public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonFX(3), new WPI_TalonFX(4));
+  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonFX(5),
+      new CANSparkMax(Constants.SparkMax06ID, MotorType.kBrushless));
 
   private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
 
@@ -54,8 +60,10 @@ public class DriveTrain extends SubsystemBase {
 
     m_limelight = limelight;
 
-    Constants.leftFollower.set(ControlMode.Follower,Constants.leftFollower.getDeviceID());
-    Constants.rightFollower.set(ControlMode.Follower,Constants.rightFollower.getDeviceID());
+    Constants.leftFollower.set(ControlMode.Follower, Constants.leftFollower.getDeviceID());
+    Constants.rightFollower.set(ControlMode.Follower, Constants.rightFollower.getDeviceID());
+
+    Constants.rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     // Encoders may measure differently in the real world and in
     // simulation. In this example the robot moves 0.042 barleycorns
@@ -108,17 +116,18 @@ public class DriveTrain extends SubsystemBase {
     LimelightData limelightData = m_limelight.getLimeLightValues();
     Constants.leftFront.set(pid.calculate(limelightData.getNegMotorPower(), 0));
     Constants.rightFront.set(pid.calculate(limelightData.getPosMotorPower(), 0));
-    // // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
+    // // Sets the error tolerance to 2, and the error derivative tolerance to 10
+    // per
     // // second
     // pid.setTolerance(2, 10);
 
     // // Returns true if the error is less than 2 units, and the
     // // error derivative is less than 10 units
     // pid.atSetpoint();
-    SmartDashboard.putNumber("leftFront", Constants.leftFront.get());
-    SmartDashboard.putNumber("leftFollower", Constants.leftFollower.get());
-    SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
-    SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
+    // SmartDashboard.putNumber("leftFront", Constants.leftFront.get());
+    // SmartDashboard.putNumber("leftFollower", Constants.leftFollower.get());
+    // SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
+    // SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
   }
 
   public void turnRight() {
@@ -128,7 +137,8 @@ public class DriveTrain extends SubsystemBase {
     LimelightData limelightData = m_limelight.getLimeLightValues();
     Constants.leftFront.set(pid.calculate(limelightData.getPosMotorPower(), 0));
     Constants.rightFront.set(pid.calculate(limelightData.getNegMotorPower(), 0));
-    // // Sets the error tolerance to 2, and the error derivative tolerance to 10 per
+    // // Sets the error tolerance to 2, and the error derivative tolerance to 10
+    // per
     // // second
     // pid.setTolerance(2, 10);
 

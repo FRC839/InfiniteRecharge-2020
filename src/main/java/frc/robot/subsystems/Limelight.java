@@ -20,6 +20,9 @@ public class Limelight {
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-rosie");
 
+    public Limelight() {
+    }
+
     public LimelightData getLimeLightValues() {
         // post to smart dashboard periodically
         // System.out.println("SOUR ILLUMINATION");
@@ -40,5 +43,9 @@ public class Limelight {
         SmartDashboard.putNumber("LimelightArea", data.area);
 
         return data;
+    }
+
+    public void lightOff() {
+        NetworkTableInstance.getDefault().getTable("limelight-rosie").getEntry("ledMode").setNumber(1);
     }
 }

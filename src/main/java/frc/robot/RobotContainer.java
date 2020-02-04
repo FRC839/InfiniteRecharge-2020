@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.drivetrain.TankDrive;
-import frc.robot.commands.intake.IntakeInCommand;
+// import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.drivetrain.LightFollow;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +29,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final Limelight limelight = new Limelight();
   public final DriveTrain driveTrain = new DriveTrain(limelight);
-  public final Intake intake = new Intake();
+  // public final Intake intake = new Intake();
   // private final Flywheel flywheel = new Flywheel();
 
   public UniversalJoystick joystick = new UniversalJoystick(0);
