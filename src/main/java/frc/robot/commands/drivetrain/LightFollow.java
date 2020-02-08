@@ -7,12 +7,13 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.LimelightData;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Limelight;
-import frc.robot.Constants;
+import frc.robot.subsystems.Turret;
 
 public class LightFollow extends CommandBase {
   /**
@@ -20,13 +21,15 @@ public class LightFollow extends CommandBase {
    */
   private final DriveTrain driveTrain;
   public Limelight limeLight;
+  public Turret turret;
 
   public LightFollow(DriveTrain drivetrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     driveTrain = drivetrain;
     addRequirements(drivetrain);
 
-    limeLight  = new Limelight();
+    limeLight = new Limelight();
+    turret = new Turret();
   }
 
   // Called when the command is initially scheduled.
@@ -38,13 +41,14 @@ public class LightFollow extends CommandBase {
   @Override
   public void execute() {
     // System.out.println("LightFollow.execute()");
-    LimelightData data = limeLight.getLimeLightValues();
-    if (data.x < -2) {
-      driveTrain.turnRight();
-    }
-    if (data.x > 2) {
-      driveTrain.turnLeft();
-    }
+    // LimelightData data = limeLight.getLimeLightValues();
+    // if (data.x < -0.95) {
+    // driveTrain.turnRight();
+    // }
+    // if (data.x > 0.95) {
+    // driveTrain.turnLeft();
+    // }
+    turret.turnToTicks();
   }
 
   // Called once the command ends or is interrupted.

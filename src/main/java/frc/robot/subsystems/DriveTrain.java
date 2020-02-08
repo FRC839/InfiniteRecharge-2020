@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightData;
+import frc.robot.subsystems.Limelight;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -31,16 +32,16 @@ public class DriveTrain extends SubsystemBase {
    * the robots chassis. These include four drive motors, a left and right encoder
    * and a gyro.
    */
+  public Limelight limeLight;
 
   public static Limelight m_limelight;
 
-  public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonFX(3), new WPI_TalonFX(4));
-  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonFX(5),
-      new CANSparkMax(Constants.SparkMax06ID, MotorType.kBrushless));
+  public final SpeedController leftSide = new SpeedControllerGroup(new WPI_TalonFX(2), new WPI_TalonFX(5));
+  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonFX(4), new WPI_TalonFX(3));
 
   private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
 
-  public final double kP = 0.750;
+  public final double kP = 10000.000;
   public final double kI = 0.000;
   public final double kD = 0.000;
 
@@ -64,6 +65,9 @@ public class DriveTrain extends SubsystemBase {
     Constants.rightFollower.set(ControlMode.Follower, Constants.rightFollower.getDeviceID());
 
     Constants.rightFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    Constants.rightFollower.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    Constants.leftFront.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    Constants.leftFollower.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
 
     // Encoders may measure differently in the real world and in
     // simulation. In this example the robot moves 0.042 barleycorns
@@ -150,41 +154,4 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
     SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
   }
-
-  /**
-   * Get the robot's heading.
-   *
-   * @return The robots heading in degrees.
-   */
-  // public double getHeading() {
-  // return m_gyro.getAngle();
-  // }
-
-  /**
-   * Reset the robots sensors to the zero states.
-   */
-  // public void reset() {
-  // m_gyro.reset();
-  // m_leftEncoder.reset();
-  // m_rightEncoder.reset();
-  // }
-
-  /**
-   * Get the average distance of the encoders since the last reset.
-   *
-   * @return The distance driven (average of left and right encoders).
-   */
-  // public double getDistance() {
-  // return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2;
-  // }
-
-  /**
-   * Get the distance to the obstacle.
-   *
-   * @return The distance to the obstacle detected by the rangefinder.
-   */
-  // public double getDistanceToObstacle() {
-  // // Really meters in simulation since it's a rangefinder...
-  // return m_rangefinder.getAverageVoltage();
-  // }
 }
