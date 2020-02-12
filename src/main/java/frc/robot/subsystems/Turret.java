@@ -17,9 +17,9 @@ import frc.robot.LimelightData;
 
 public class Turret extends SubsystemBase {
     public Limelight limelight;
-    public final double kP = 10000.000;
-    public final double kI = 0.000;
-    public final double kD = 0.000;
+    public final double kP = 1.000;
+    public final double kI = 1.000;
+    public final double kD = 1.000;
 
     // Creates a PIDController with gains kP, kI, and kD
     PIDController pid = new PIDController(kP, kI, kD);
@@ -46,12 +46,12 @@ public class Turret extends SubsystemBase {
     public double getDistanceInTicks() {
         LimelightData data = limelight.getLimeLightValues();
         double alpha = data.x * 0.906; // degrees per unit
-        double ticks = alpha * 11.378; // ticks per degree
+        double ticks = alpha * 11.378; // ticks per degree (was 4096/360) (now 42/360)
         return ticks;
     }
 
     public double getError() {
-        double error = encoderPosition - getDistanceInTicks();
+        double error = getDistanceInTicks();
         if (Math.abs(error) < 5) {
             return 0;
         } else {
@@ -68,13 +68,25 @@ public class Turret extends SubsystemBase {
     // }
     // }
 
+    public double getPid() {
+        LimelightData data = limelight.getLimeLightValues();
+        double pidValue = pid.calculate(data.x, getError());
+        if (pidValue > 0.01) {
+            return 0.01;
+        } else if (pidValue < -0.01) {
+            return -0.01;
+        } else {
+            return pidValue;
+        }
+    }
+
     public void turnToTicks() {
         LimelightData data = limelight.getLimeLightValues();
         double error = getError();
         if (error == 0) {
             Constants.sparkTestMotor.set(0);
         } else {
-            Constants.sparkTestMotor.set(pid.calculate(data.x, getError()));
+            Constants.sparkTestMotor.set(getPid());
         }
         SmartDashboard.putNumber("Error (Ticks)", getError());
     }
