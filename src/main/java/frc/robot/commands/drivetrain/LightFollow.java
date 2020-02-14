@@ -35,6 +35,7 @@ public class LightFollow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // turret.NEOencoder.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -54,11 +55,17 @@ public class LightFollow extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    Constants.sparkTestMotor.set(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // if (turret.getError() == 0) {
+    // return true;
+    // } else {
+    // return false;
+    // }
     return false;
   }
 }
