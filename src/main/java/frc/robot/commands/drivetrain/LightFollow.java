@@ -35,20 +35,14 @@ public class LightFollow extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // turret.NEOencoder.setPosition(0);
+    turret.NEOencoder.setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // System.out.println("LightFollow.execute()");
-    // LimelightData data = limeLight.getLimeLightValues();
-    // if (data.x < -0.95) {
-    // driveTrain.turnRight();
-    // }
-    // if (data.x > 0.95) {
-    // driveTrain.turnLeft();
-    // }
+    SmartDashboard.putBoolean("isOnTarget", turret.isOnTarget);
+    SmartDashboard.putNumber("NEOencoder", turret.NEOencoder.getPosition());
     turret.turnToTicks();
   }
 

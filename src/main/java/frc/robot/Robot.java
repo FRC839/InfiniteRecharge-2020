@@ -43,7 +43,9 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    turret = new Turret();
     Constants.rightFront.setSelectedSensorPosition(0);
+    // turret.NEOencoder.setPosition(0);
   }
 
   /**

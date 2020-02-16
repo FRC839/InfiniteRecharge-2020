@@ -1,0 +1,235 @@
+        public double getDistanceInTicks() {
+        LimelightData data = limelight.getLimeLightValues();
+        double targetAngle = data.x * (degreesPerUnit); // degrees per unit
+        double ticks = targetAngle * (ticksPerDegree); // ticks per degree (was 4096/360) (now 42/360)
+        return error;
+    }
+    
+    // public double getError() {
+    //     double error = getDistanceInTicks();
+    //     if (error > -deadbandValue && error < deadbandValue) { // 1.104
+    //         return 0;
+    //     } else {
+    //         return error;
+    //     }
+    // }
+
+    public double getPid() {
+        LimelightData data = limelight.getLimeLightValues();
+        double pidValue = pid.calculate(data.x, -getDistanceInTicks());
+        if (pidValue > speedLimit) {
+            return speedLimit;
+        } else if (pidValue < -speedLimit) {
+            return -speedLimit;
+        } else {
+            return pidValue;
+        }
+    }
+
+    public boolean isOnTarget() {
+        double error = getDistanceInTicks();
+        if (error < deadbandValue && error > -deadbandValue) {
+            targetBoolean = true;
+        } else {
+            targetBoolean = false;
+        }
+        SmartDashboard.putBoolean("isOnTarget", targetBoolean);
+        return targetBoolean;
+    }
+
+    public void turnToTicks() {
+        // double error = getError();
+        System.out.println("turnToTicks()");
+        boolean onTarget = isOnTarget();
+        if (onTarget == true) {
+            Constants.sparkTestMotor.set(0);
+            SmartDashboard.putNumber("Error (Ticks)", getDistanceInTicks());
+        } else if (onTarget == false) {
+            Constants.sparkTestMotor.set(getPid());
+            SmartDashboard.putNumber("Error (Ticks)", getDistanceInTicks());
+        }
+    }
+
+
+
+
+OR
+
+
+
+            LimelightData data = limelight.getLimeLightValues();
+        double error = data.x * degreesPerUnit * ticksPerDegree; // ticks per degree 4096/360
+        double target = (NEOencoder.getPosition() * 4096) + error;
+        SmartDashboard.putNumber("Error", error);
+        SmartDashboard.putNumber("Target", target);
+        SmartDashboard.putNumber("NEOencoder", NEOencoder.getPosition());
+        
+        if (data.x > -errorBand && data.x < errorBand) {
+            isOnTarget = true;
+            SmartDashboard.putBoolean("isOnTarget", isOnTarget);
+            Constants.sparkTestMotor.set(0);
+        } else {
+            isOnTarget = false;
+            SmartDashboard.putBoolean("isOnTarget", isOnTarget);
+            // double speed;
+            // if (data.x < target) {
+                double speed = pid.calculate(data.x, target);
+            //     if (speed > speedLimit) {
+            //         Constants.sparkTestMotor.set(speedLimit);
+            //     } else if (speed < -speedLimit) {
+            //         Constants.sparkTestMotor.set(-speedLimit);
+            //     } else {
+            //         Constants.sparkTestMotor.set(speed);
+            //     }
+            // } else if (data.x > target) {
+            //     speed = pid.calculate(data.x, target);
+                if (speed > speedLimit) {
+                    Constants.sparkTestMotor.set(speedLimit);
+                } else if (speed < -speedLimit) {
+                    Constants.sparkTestMotor.set(-speedLimit);
+                } else {
+                    Constants.sparkTestMotor.set(speed);
+                // }
+            }
+        }
+
+
+        OR
+
+
+
+                SmartDashboard.putNumber("Error", error);
+        SmartDashboard.putNumber("Target", target);
+        SmartDashboard.putNumber("NEOencoder", NEOencoder.getPosition());
+
+        pid.setSetpoint(target);
+
+        if (data.x > -errorBand && data.x < errorBand) {
+            isOnTarget = true;
+            SmartDashboard.putBoolean("isOnTarget", isOnTarget);
+            Constants.sparkTestMotor.set(0);
+        } else {
+            isOnTarget = false;
+            SmartDashboard.putBoolean("isOnTarget", isOnTarget);
+
+            double pidOut = pid.calculate(error);
+            SmartDashboard.putNumber("speed (PID)", pidOut);
+            SmartDashboard.putNumber("NEOencoder", NEOencoder.getPosition());
+
+            // if (data.x < 0) {
+            // double speed = pid.calculate(data.x, target);
+            // SmartDashboard.putNumber("speed (PID)", speed);
+            // if (speed > speedLimit) {
+            // Constants.sparkTestMotor.set(speedLimit);
+            // } else if (speed < -speedLimit) {
+            // Constants.sparkTestMotor.set(-speedLimit);
+            // } else {
+            // Constants.sparkTestMotor.set(speed);
+            // }
+            // } else if (data.x > 0) {
+            // double speed = -pid.calculate(data.x, target);
+            // SmartDashboard.putNumber("speed (PID)", speed);
+            // if (pidOut > speedLimit) {
+            // Constants.sparkTestMotor.set(speedLimit);
+            // SmartDashboard.putNumber("speed (PID)", pidOut);
+            // } else if (pidOut < -speedLimit) {
+            // Constants.sparkTestMotor.set(-speedLimit);
+            // SmartDashboard.putNumber("speed (PID)", pidOut);
+            // } else {
+            Constants.sparkTestMotor.set(pidOut);
+            // SmartDashboard.putNumber("speed (PID)", pidOut);
+            // }
+        }
+    }
+
+
+
+
+
+    OR
+
+
+    
+        // Gather limelight values
+        LimelightData data = limelight.getLimeLightValues();
+
+        // Calculate error (dist from data.x = 0 to data.x = target x)
+        // Can be positive or negative
+        double error = data.x * degreesPerUnit * ticksPerDegree;
+
+        // Multiply the encoder value by 839
+        // This creates more values per revolution
+        double modifiedEncoder = NEOencoder.getPosition() * 839;
+
+        // Determine the magnitude and direction of the motor's desired movement
+        double target = modifiedEncoder + error;
+
+        // Is the error within the tolerance band?
+        if (error > -toleranceBand && error < toleranceBand) {
+
+            // Update Shuffleboard values
+            SmartDashboard.putNumber("Error", error);
+            SmartDashboard.putNumber("Target", target);
+            SmartDashboard.putNumber("Modified Encoder", modifiedEncoder);
+
+            // Set the isOnTarget boolean to true
+            isOnTarget = true;
+
+            // Set the motor to 0 because we are on target
+            Constants.sparkTestMotor.set(0);
+        }
+
+        else {
+
+            // Update Shuffleboard values
+            SmartDashboard.putNumber("Error", error);
+            SmartDashboard.putNumber("Target", target);
+            SmartDashboard.putNumber("Modified Encoder", modifiedEncoder);
+
+            // Set the isOnTarget boolean to false
+            isOnTarget = false;
+
+            // Calculate the pid value using the error and target variables
+            // This is the motor's speed (a dynamic variable)
+            double pidOut = pid.calculate(error, -target);
+
+            // The next statements are to limit the maximum and minimum speeds
+            // Is the speed (pidOut) greater than the speed limit?
+            if (pidOut > speedLimit) {
+
+                // Update Shuffleboard values
+                SmartDashboard.putNumber("Error", error);
+                SmartDashboard.putNumber("PID", pidOut);
+                SmartDashboard.putNumber("Target", target);
+                SmartDashboard.putNumber("Modified Encoder", modifiedEncoder);
+
+                // Set the speed equal to the maximum speed limit
+                Constants.sparkTestMotor.setVoltage(speedLimit);
+            }
+
+            // Is the speed (pidOut) less than the negative speed limit?
+            else if (pidOut < -speedLimit) {
+
+                // Update Shuffleboard values
+                SmartDashboard.putNumber("Error", error);
+                SmartDashboard.putNumber("PID", pidOut);
+                SmartDashboard.putNumber("Target", target);
+                SmartDashboard.putNumber("Modified Encoder", modifiedEncoder);
+
+                // Set the speed equal to the minimum speed limit
+                Constants.sparkTestMotor.set(-speedLimit);
+            }
+
+            // Does the speed not fall into the two above categories?
+            else {
+
+                // Update Shuffleboard values
+                SmartDashboard.putNumber("Error", error);
+                SmartDashboard.putNumber("PID", pidOut);
+                SmartDashboard.putNumber("Target", target);
+                SmartDashboard.putNumber("Modified Encoder", modifiedEncoder);
+
+                // Set the speed equal to the original speed (pidOut)
+                Constants.sparkTestMotor.set(pidOut);
+            }
+        }

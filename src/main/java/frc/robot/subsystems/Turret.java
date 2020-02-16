@@ -17,12 +17,19 @@ import frc.robot.LimelightData;
 
 public class Turret extends SubsystemBase {
     public Limelight limelight;
-    public final double kP = 0.500; // was 1.000, 0.250
-    public final double kI = 0.750; // was 0.250, 1.000, 2.500, 1.250
-    public final double kD = 1.250; // was 0.250, 1.000, 0.500, 0.750
+    // public LimelightData limelightData;
+    public final double kP = 1.0; // was 1.000, 0.250
+    public final double kI = 1.0; // was 0.250, 1.000, 2.500, 1.250
+    public final double kD = 1.0; // was 0.250, 1.000, 0.500, 0.750, 1.250, 1.500
 
     public double degreesPerUnit = 54 / 59.6;
-    public double ticksPerDegree = 4096 / 360;
+    public double ticksPerDegree = 839 / 360;
+    public double speedLimit = 0.01;
+    public double toleranceBand = 5; // ticks
+
+    static final double MAX_POWER = 0.20;
+
+    public boolean isOnTarget;
 
     // Creates a PIDController with gains kP, kI, and kD
     PIDController pid = new PIDController(kP, kI, kD);
@@ -32,6 +39,7 @@ public class Turret extends SubsystemBase {
 
     public Turret() {
         limelight = new Limelight();
+        // limelightData = new LimelightData(limelightX, limelightY, limelightArea);
     }
 
     public void turretLeft() {
@@ -46,50 +54,19 @@ public class Turret extends SubsystemBase {
         Constants.sparkTestMotor.set(0);
     }
 
-    public double getDistanceInTicks() {
-        LimelightData data = limelight.getLimeLightValues();
-        double targetAngle = data.x * (degreesPerUnit); // degrees per unit
-        double ticks = targetAngle * (ticksPerDegree); // ticks per degree (was 4096/360) (now 42/360)
-        return ticks;
-    }
-
-    public double getError() {
-        double error = getDistanceInTicks();
-        if (error > -10 && error < 10) { // 1.104
-            return 0;
-        } else {
-            return -error;
+    public double applyLimits(double power) {
+        if (power < -MAX_POWER) {
+            power = -MAX_POWER;
+        } else if (power > MAX_POWER) {
+            power = MAX_POWER;
         }
-    }
-
-    // public boolean isErrorZero() {
-    // double errorValue = getError();
-    // if (errorValue == 0) {
-    // return true;
-    // } else {
-    // return false;
-    // }
-    // }
-
-    public double getPid() {
-        LimelightData data = limelight.getLimeLightValues();
-        double pidValue = pid.calculate(data.x, getError());
-        if (pidValue > 0.02) {
-            return 0.02;
-        } else if (pidValue < -0.02) {
-            return -0.02;
-        } else {
-            return pidValue;
-        }
+        return power;
     }
 
     public void turnToTicks() {
-        double error = getError();
-        if (error == 0) {
-            Constants.sparkTestMotor.set(0);
-        } else {
-            Constants.sparkTestMotor.set(getPid());
-        }
-        SmartDashboard.putNumber("Error (Ticks)", getError());
+        LimelightData data = limelight.getLimeLightValues();
+        double pidOut = pid.calculate(data.x, 0);
+        Constants.sparkTestMotor.setVoltage(applyLimits(pidOut));
+        SmartDashboard.putNumber("pidOut", pidOut);
     }
 }

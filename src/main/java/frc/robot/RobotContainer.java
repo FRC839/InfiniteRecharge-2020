@@ -70,7 +70,7 @@ public class RobotContainer {
     // final JoystickButton ModeABtn = new JoystickButton(joystick, 13);
     // final JoystickButton ModeBBtn = new JoystickButton(joystick, 14);
 
-    aBtn.whenPressed(new LightFollow(driveTrain));
+    aBtn.whileHeld(new LightFollow(driveTrain));
   }
 
   /**
