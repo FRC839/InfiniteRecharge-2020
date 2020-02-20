@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,24 +18,30 @@ import frc.robot.LimelightData;
 
 public class Turret extends SubsystemBase {
     public Limelight limelight;
-    // public LimelightData limelightData;
-    public final double kP = 1.0; // was 1.000, 0.250
-    public final double kI = 1.0; // was 0.250, 1.000, 2.500, 1.250
-    public final double kD = 1.0; // was 0.250, 1.000, 0.500, 0.750, 1.250, 1.500
+
+    /**
+     * Zeigler-Nichols tuning method: (1) Set kI and kD to 0 (2) Increase kP until
+     * the system starts oscelating for a period of Tu. You want the oscelation to
+     * be large enough that you can time it. This maximum P will be referred to as
+     * Ku. (3) Calculate kI and kD with the formulas and values below.
+     */
+
+    // Tu = 0.3, Ku = 0.03 (Formulas below are for a PID loop (not P nor PI))
+    public final double kP = 0.018; // kP = 0.6 * Ku
+    public final double kI = 0.12; // kI = 1.2 * Ku / Tu            //0.12
+    public final double kD = 0.000675; // kD = 3 * Ku * Tu / 40   // 0.000675 // 0.001
 
     public double degreesPerUnit = 54 / 59.6;
     public double ticksPerDegree = 839 / 360;
     public double speedLimit = 0.01;
     public double toleranceBand = 5; // ticks
 
-    static final double MAX_POWER = 0.20;
-
-    public boolean isOnTarget;
+    static final double maxPower = 0.20;
 
     // Creates a PIDController with gains kP, kI, and kD
     PIDController pid = new PIDController(kP, kI, kD);
 
-    public CANEncoder NEOencoder = new CANEncoder(Constants.sparkTestMotor);
+    public CANEncoder NEOencoder = new CANEncoder(Constants.NEOmotor);
     public double encoderPosition = NEOencoder.getPosition();
 
     public Turret() {
@@ -43,30 +50,46 @@ public class Turret extends SubsystemBase {
     }
 
     public void turretLeft() {
-        Constants.sparkTestMotor.set(1);
+        Constants.NEOmotor.set(1);
     }
 
     public void turretRight() {
-        Constants.sparkTestMotor.set(-1);
+        Constants.NEOmotor.set(-1);
     }
 
     public void turretStop() {
-        Constants.sparkTestMotor.set(0);
+        Constants.NEOmotor.set(0);
     }
 
     public double applyLimits(double power) {
-        if (power < -MAX_POWER) {
-            power = -MAX_POWER;
-        } else if (power > MAX_POWER) {
-            power = MAX_POWER;
+        if (power < -maxPower) {
+            power = -maxPower;
+        } else if (power > maxPower) {
+            power = maxPower;
         }
         return power;
     }
 
-    public void turnToTicks() {
+    public double getPid() {
         LimelightData data = limelight.getLimeLightValues();
         double pidOut = pid.calculate(data.x, 0);
-        Constants.sparkTestMotor.setVoltage(applyLimits(pidOut));
-        SmartDashboard.putNumber("pidOut", pidOut);
+        pid.setTolerance(2); // 2%
+        if (pid.atSetpoint() == true) {
+            pidOut = 0;
+        }
+        return pidOut;
+    }
+
+    public void turnToTicks() {
+        Constants.NEOmotor.setVoltage(applyLimits(getPid()));
+        SmartDashboard.putNumber("pidOut", getPid());
+    }
+
+    public boolean isOnTarget() {
+        if (pid.atSetpoint() == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

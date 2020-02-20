@@ -47,8 +47,4 @@ public class Limelight {
 
         return data;
     }
-
-    public void lightOff() {
-        NetworkTableInstance.getDefault().getTable("limelight-rosie").getEntry("ledMode").setNumber(1);
-    }
 }

@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.DriveTrain;
+// import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 import frc.robot.LimelightData;
@@ -29,7 +29,7 @@ import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private RobotContainer m_robotContainer;
-  public static DriveTrain drivetrain;
+  // public static DriveTrain drivetrain;
   public static Limelight limelight;
   public static Turret turret;
 
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     turret = new Turret();
-    Constants.rightFront.setSelectedSensorPosition(0);
+    // Constants.rightFront.setSelectedSensorPosition(0);
     // turret.NEOencoder.setPosition(0);
   }
 

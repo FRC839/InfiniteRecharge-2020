@@ -5,13 +5,15 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.drivetrain;
+package frc.robot.commands.limelight;
 
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.LimelightData;
-import frc.robot.subsystems.DriveTrain;
+
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Turret;
 
@@ -19,15 +21,10 @@ public class LightFollow extends CommandBase {
   /**
    * Creates a new LightFollow.
    */
-  private final DriveTrain driveTrain;
   public Limelight limeLight;
   public Turret turret;
 
-  public LightFollow(DriveTrain drivetrain) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    driveTrain = drivetrain;
-    addRequirements(drivetrain);
-
+  public LightFollow() {
     limeLight = new Limelight();
     turret = new Turret();
   }
@@ -36,30 +33,25 @@ public class LightFollow extends CommandBase {
   @Override
   public void initialize() {
     turret.NEOencoder.setPosition(0);
+    NetworkTableInstance.getDefault().getTable("limelight-rosie").getEntry("ledMode").setValue(3);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putBoolean("isOnTarget", turret.isOnTarget);
-    SmartDashboard.putNumber("NEOencoder", turret.NEOencoder.getPosition());
     turret.turnToTicks();
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Constants.sparkTestMotor.set(0);
+    Constants.NEOmotor.set(0);
+    NetworkTableInstance.getDefault().getTable("limelight-rosie").getEntry("ledMode").setValue(1);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // if (turret.getError() == 0) {
-    // return true;
-    // } else {
-    // return false;
-    // }
     return false;
   }
 }
