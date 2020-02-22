@@ -28,13 +28,13 @@ public class Turret extends SubsystemBase {
 
     // Tu = 0.3, Ku = 0.03 (Formulas below are for a PID loop (not P nor PI))
     public final double kP = 0.018; // kP = 0.6 * Ku
-    public final double kI = 0.12; // kI = 1.2 * Ku / Tu            //0.12
-    public final double kD = 0.000675; // kD = 3 * Ku * Tu / 40   // 0.000675 // 0.001
+    public final double kI = 0.12; // kI = 1.2 * Ku / Tu
+    public final double kD = 0.000675; // kD = 3 * Ku * Tu / 40
 
-    public double degreesPerUnit = 54 / 59.6;
-    public double ticksPerDegree = 839 / 360;
-    public double speedLimit = 0.01;
-    public double toleranceBand = 5; // ticks
+    public final double DEGREES_PER_UNIT = 54 / 59.6;
+    public final double TICKS_PER_DEGREE = 839 / 360;
+    public final double SPEED_LIMIT = 0.01;
+    public final double TOLERANCE_BAND = 5; // ticks
 
     static final double maxPower = 0.20;
 

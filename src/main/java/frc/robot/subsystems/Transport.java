@@ -12,6 +12,18 @@ import frc.robot.Constants;
 
 public class Transport extends SubsystemBase {
 
+    public static final byte READABLE_VALUE = 0b00011111; // Will ultimately be dynamic (and no longer a final)
+
+    // Assume 1 = unbroken and 0 = broken
+    // 5 of 8 bits are used
+    public static final byte SENSOR_1 = 0b00011110;
+    public static final byte SENSOR_2 = 0b00011101;
+    public static final byte SENSOR_3 = 0b00011011;
+    public static final byte SENSOR_4 = 0b00010111;
+    public static final byte SENSOR_5 = 0b00001111;
+
+    private States state = States.empty;
+
     public Transport() {
 
     }
@@ -52,29 +64,45 @@ public class Transport extends SubsystemBase {
         Constants.transportMotorStage3.set(0);
     }
 
-    public static void transportMachine(String[] args) {
-        String transportCaseString;
-        int combination = 0;
-        switch (combination) {
-        case 1:
-            transportCaseString = "config1";
-            break;
-        case 2:
-            transportCaseString = "config2";
-            break;
-        case 3:
-            transportCaseString = "config3";
-            break;
-        case 4:
-            transportCaseString = "config4";
-            break;
-        case 5:
-            transportCaseString = "config5";
-            break;
-        case 6:
-            transportCaseString = "config6";
-            break;
-        }
+    public enum States {
+        calc, empty, ball1, ball2, ball3, ball4, ball5;
     }
 
+    public void transportMachine() {
+
+        switch (state) {
+            case calc:
+            {
+            break;
+            }
+            case empty: // 0 balls in the system
+            {
+                if ((READABLE_VALUE & SENSOR_1) != 0)
+                {
+                    
+                }
+            break;
+            }
+            case ball1: // 1 ball in the system
+            {
+                break;
+            }
+            case ball2: // 2 balls in the system
+            {
+                break;
+            }
+            case ball3: // 3 balls in the system
+            {
+                break;
+            }
+            case ball4: // 4 balls in the system
+            {
+                break;
+            }
+            case ball5: // 5 balls in the system
+            {
+                break;
+            }
+        }
+    }
 }
