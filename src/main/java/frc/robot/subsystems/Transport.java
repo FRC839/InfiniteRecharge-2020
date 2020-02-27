@@ -9,10 +9,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.commands.internal.groups.EmptyToBall1Transition;
 
 public class Transport extends SubsystemBase {
 
-    public static final byte READABLE_VALUE = 0b00011111; // Will ultimately be dynamic (and no longer a final)
+    public static final byte READABLE_VALUE = 0b00011111; // Will ultimately be dynamic (and no longer a constant)
 
     // Assume 1 = unbroken and 0 = broken
     // 5 of 8 bits are used
@@ -65,44 +66,48 @@ public class Transport extends SubsystemBase {
     }
 
     public enum States {
-        calc, empty, ball1, ball2, ball3, ball4, ball5;
+        errorState, empty, toBall1, ball1, ball2, ball3, ball4, ball5;
     }
 
     public void transportMachine() {
 
         switch (state) {
-            case calc:
-            {
+        case errorState: { // The transport system is in an error state
             break;
+        }
+        case empty: // 0 balls in the system
+        {
+            if ((READABLE_VALUE & SENSOR_1) != 0) {
+                state = States.toBall1;
             }
-            case empty: // 0 balls in the system
-            {
-                if ((READABLE_VALUE & SENSOR_1) != 0)
-                {
-                    
-                }
             break;
-            }
-            case ball1: // 1 ball in the system
-            {
-                break;
-            }
-            case ball2: // 2 balls in the system
-            {
-                break;
-            }
-            case ball3: // 3 balls in the system
-            {
-                break;
-            }
-            case ball4: // 4 balls in the system
-            {
-                break;
-            }
-            case ball5: // 5 balls in the system
-            {
-                break;
-            }
+        }
+        case toBall1: // transition from empty to 1 ball in the system
+        {
+            new EmptyToBall1Transition();
+            state = States.ball1;
+            break;
+        }
+        case ball1: // 1 ball in the system
+        {
+            break;
+        }
+        case ball2: // 2 balls in the system
+        {
+            break;
+        }
+        case ball3: // 3 balls in the system
+        {
+            break;
+        }
+        case ball4: // 4 balls in the system
+        {
+            break;
+        }
+        case ball5: // 5 balls in the system
+        {
+            break;
+        }
         }
     }
 }

@@ -7,22 +7,24 @@
 
 package frc.robot.commands.internal.groups;
 
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.internal.Ball1to2;
+import frc.robot.commands.internal.Ball2to3;
+import frc.robot.commands.internal.Ball3to4;
+import frc.robot.commands.internal.Ball4to5;
 import frc.robot.subsystems.Transport;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class EmptyToBall1Transition extends ParallelCommandGroup {
+public class EmptyToBall1Transition extends SequentialCommandGroup {
   Transport transport;
+
   /**
    * Creates a new EmptyToBall1Transition.
    */
   public EmptyToBall1Transition() {
     transport = new Transport();
-    // Add your commands in the super() call, e.g.
-    // super(new FooCommand(), new BarCommand());super();
-    super(new Ball1to2(transport));
+    addCommands(new Ball1to2(transport), new Ball2to3(transport), new Ball3to4(transport), new Ball4to5(transport));
   }
 }
