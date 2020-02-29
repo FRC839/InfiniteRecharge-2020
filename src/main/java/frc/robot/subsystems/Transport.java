@@ -30,11 +30,11 @@ public class Transport extends SubsystemBase {
     }
 
     public void Stage1In() {
-        Constants.transportMotorStage1.set(1);
+        Constants.transportMotorStage1.set(0.25);
     }
 
     public void Stage1Out() {
-        Constants.transportMotorStage1.set(-1);
+        Constants.transportMotorStage1.set(-0.25);
     }
 
     public void Stage1Stop() {
@@ -42,11 +42,11 @@ public class Transport extends SubsystemBase {
     }
 
     public void Stage2In() {
-        Constants.transportMotorStage2.set(1);
+        Constants.transportMotorStage2.set(0.25);
     }
 
     public void Stage2Out() {
-        Constants.transportMotorStage2.set(-1);
+        Constants.transportMotorStage2.set(-0.25);
     }
 
     public void Stage2Stop() {
@@ -54,11 +54,11 @@ public class Transport extends SubsystemBase {
     }
 
     public void Stage3In() {
-        Constants.transportMotorStage3.set(1);
+        Constants.transportMotorStage3.set(0.25);
     }
 
     public void Stage3Out() {
-        Constants.transportMotorStage3.set(-1);
+        Constants.transportMotorStage3.set(-0.25);
     }
 
     public void Stage3Stop() {
