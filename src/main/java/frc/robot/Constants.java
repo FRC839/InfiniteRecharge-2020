@@ -31,7 +31,7 @@ public final class Constants {
     public static final int CAN_TransportStage3   = 8;
 
     public static final int CAN_Turret            = 9;
-    public static final int CAN_Flywheel          = 10;
+    public static final int CAN_Shooter           = 10;
     public static final int CAN_Intake            = 11;
 
     // PWN Pin Mapping
