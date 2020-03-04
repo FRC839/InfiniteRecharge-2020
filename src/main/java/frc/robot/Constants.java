@@ -26,12 +26,13 @@ public final class Constants {
     public static final int CAN_DriveTrain_Right1 = 4;
     public static final int CAN_DriveTrain_Right2 = 5;
 
-    public static final int CAN_Turret            = 6;
+    public static final int CAN_TransportStage1   = 6;
+    public static final int CAN_TransportStage2   = 7;
+    public static final int CAN_TransportStage3   = 8;
 
-    public static final int CAN_TransportStage1   = 10;
-    public static final int CAN_TransportStage2   = 11;
-    public static final int CAN_TransportStage3   = 12;
-    public static final int CAN_Intake            = 13;
+    public static final int CAN_Turret            = 9;
+    public static final int CAN_Flywheel          = 10;
+    public static final int CAN_Intake            = 11;
 
     // PWN Pin Mapping
 
@@ -50,7 +51,6 @@ public final class Constants {
 
     public static final int LED_STRIP_NUM_OF_LEDS = 64;
     public static final int NUM_BALLS             = 5;
-
 
 	public static final double TurretSpeed        = 0.2;
 
