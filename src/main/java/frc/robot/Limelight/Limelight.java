@@ -5,28 +5,27 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.subsystems;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+package frc.robot.Limelight;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants;
-import frc.robot.LimelightData;
 
 /**
  * Add your docs here.
  */
-public class Limelight {
+public class Limelight 
+{
 
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-rosie");
 
-    public Limelight() {
+    public Limelight() 
+    {
     }
 
-    public LimelightData getLimeLightValues() {
+    public LimelightData getLimeLightValues() 
+    {
         // post to smart dashboard periodically
         // System.out.println("SOUR ILLUMINATION");
 

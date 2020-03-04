@@ -20,10 +20,10 @@ import frc.robot.Constants;
  * Have the robot drive tank style.
  */
 public class TankDrive extends CommandBase
-    {
-    private final DriveTrain driveTrain;
-    public final DoubleSupplier kLeft;
-    public final DoubleSupplier kRight;
+{
+    private final DriveTrain        m_driveTrain;
+    private final DoubleSupplier    m_kLeft;
+    private final DoubleSupplier    m_kRight;
 
     /**
      * Creates a new TankDrive command.
@@ -32,13 +32,14 @@ public class TankDrive extends CommandBase
      * @param right      The control input for the right sight of the drive
      * @param drivetrain The drivetrain subsystem to drive
      */
-    public TankDrive(DoubleSupplier left, DoubleSupplier right, DriveTrain drivetrain)
-        {
-        driveTrain = drivetrain;
-        kLeft = left;
-        kRight = right;
-        addRequirements(drivetrain);
-        }
+    public TankDrive(DoubleSupplier left, DoubleSupplier right, DriveTrain drivetrain)  
+    {
+        m_driveTrain = drivetrain;
+        m_kLeft = left;
+        m_kRight = right;
+
+        addRequirements( m_driveTrain );
+    }
 
     // public double getTalonFX04Rotations()
     //     {
@@ -99,8 +100,9 @@ public class TankDrive extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     @Override
     public void execute()
-        {
-        driveTrain.drive(-kLeft.getAsDouble(), -kRight.getAsDouble());
+    {
+        m_driveTrain.drive(-m_kLeft.getAsDouble(), -m_kRight.getAsDouble());
+
         // SmartDashboard.putNumber("FX04ROT", getTalonFX04Rotations());
         // SmartDashboard.putNumber("FX04RPM", getTalonFX04RPM());
         // SmartDashboard.putNumber("FX04RPM", getTalonFX04RPM());
@@ -113,19 +115,19 @@ public class TankDrive extends CommandBase
         // SmartDashboard.putNumber("FX05ROT", getTalonFX05Rotations());
         // SmartDashboard.putNumber("FX05RPM", getTalonFX05RPM());
         // SmartDashboard.putNumber("FX05RPM", getTalonFX05RPM());
-        }
+    }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished()
-        {
+    {
         return false; // Runs until interrupted
-        }
+    }
 
     // Called once after isFinished returns true
     @Override
     public void end(boolean interrupted)
-        {
-        driveTrain.drive(0, 0);
-        }
+    {
+        m_driveTrain.drive(0, 0);
     }
+}

@@ -10,43 +10,45 @@ package frc.robot.commands.internal;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Transport;
 
-public class Ball4to5 extends CommandBase {
+public class Ball4to5 extends CommandBase 
+{
 
-  private final Transport transportMechanism;
+  private final Transport m_transportMechanism;
 
   /**
    * Creates a new Ball4to5.
    */
-  public Ball4to5(Transport transport) {
+  public Ball4to5(Transport transport) 
+  {
     // Use addRequirements() here to declare subsystem dependencies.
-    transportMechanism = transport;
-    addRequirements(transportMechanism);
+    m_transportMechanism = transport;
+    addRequirements(m_transportMechanism);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
+  public void initialize() 
+  {
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    transportMechanism.Stage2In();
-    transportMechanism.Stage3In();
+  public void execute()
+  {
+    m_transportMechanism.Stage2In();
+    m_transportMechanism.Stage3In();
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
+  public void end(boolean interrupted)
+  {
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    if ((Transport.READABLE_VALUE & Transport.SENSOR_5) != 0) {
-      return true;
-    } else {
-      return false; // Ignore warnings
-    }
+  public boolean isFinished() 
+  {
+    return ((Transport.READABLE_VALUE & Transport.SENSOR_5) != 0);
   }
 }

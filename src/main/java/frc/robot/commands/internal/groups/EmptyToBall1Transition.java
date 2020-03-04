@@ -17,14 +17,21 @@ import frc.robot.subsystems.Transport;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/latest/docs/software/commandbased/convenience-features.html
-public class EmptyToBall1Transition extends SequentialCommandGroup {
-  Transport transport;
+
+public class EmptyToBall1Transition extends SequentialCommandGroup 
+{
+  Transport m_transport;
 
   /**
    * Creates a new EmptyToBall1Transition.
    */
-  public EmptyToBall1Transition() {
-    transport = new Transport();
-    addCommands(new Ball1to2(transport), new Ball2to3(transport), new Ball3to4(transport), new Ball4to5(transport));
+  public EmptyToBall1Transition() 
+  {
+    m_transport = new Transport();
+    
+    addCommands( new Ball1to2( m_transport ), 
+                 new Ball2to3( m_transport ), 
+                 new Ball3to4( m_transport ),
+                 new Ball4to5( m_transport ));
   }
 }

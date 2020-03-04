@@ -7,39 +7,63 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import frc.robot.Constants;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+/*
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.LimelightData;
 import frc.robot.subsystems.Limelight;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+*/
+
 // import java.lang.Math;
 
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends SubsystemBase 
+{
   /*
    * The DriveTrain subsystem incorporates the sensors and actuators attached to
    * the robots chassis. These include four drive motors, a left and right encoder
    * and a gyro.
    */
+  
+  private final SpeedController leftSide  = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Left1  ),
+                                                                      new WPI_TalonFX( Constants.CAN_DriveTrain_Left2  ));
+  private final SpeedController rightSide = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Right1 ),
+                                                                      new WPI_TalonFX( Constants.CAN_DriveTrain_Right2 ));
+
+  private final DifferentialDrive drive = new DifferentialDrive( leftSide, rightSide );
+
+  public DriveTrain() 
+  {
+  }
+    
+  /**
+   * Tank style driving for the DriveTrain.
+   *
+   * @param left  Speed in range [-1,1]
+   * @param right Speed in range [-1,1]
+   */
+  public void drive(final double left, final double right) 
+  {
+    drive.tankDrive(left, right);
+  }
+/*
   public Limelight limeLight;
 
   public static Limelight m_limelight;
-
-  public final SpeedController leftSide = new SpeedControllerGroup(new CANSparkMax(6, MotorType.kBrushless), new WPI_TalonFX(5));
-  public final SpeedController rightSide = new SpeedControllerGroup(new WPI_TalonFX(4), new WPI_TalonFX(3));
-
-  private final DifferentialDrive drive = new DifferentialDrive(leftSide, rightSide);
 
   public final double kP = 10000.000;
   public final double kI = 0.000;
@@ -53,10 +77,11 @@ public class DriveTrain extends SubsystemBase {
   // private final AnalogInput m_rangefinder = new AnalogInput(6);
   // private final AnalogGyro m_gyro = new AnalogGyro(1);
 
-  /**
-   * Create a new drive train subsystem.
-   */
-  public DriveTrain(Limelight limelight) {
+  
+  // Create a new drive train subsystem.
+
+  public DriveTrain(Limelight limelight) 
+  {
     super();
 
     m_limelight = limelight;
@@ -91,9 +116,8 @@ public class DriveTrain extends SubsystemBase {
     // addChild("Gyro", m_gyro);
   }
 
-  /**
-   * The log method puts interesting information to the SmartDashboard.
-   */
+   // The log method puts interesting information to the SmartDashboard.
+   
   // public void log() {
   // SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
   // SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
@@ -101,16 +125,6 @@ public class DriveTrain extends SubsystemBase {
   // SmartDashboard.putNumber("Right Speed", m_rightEncoder.getRate());
   // SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   // }
-
-  /**
-   * Tank style driving for the DriveTrain.
-   *
-   * @param left  Speed in range [-1,1]
-   * @param right Speed in range [-1,1]
-   */
-  public void drive(final double left, final double right) {
-    drive.tankDrive(left, right);
-  }
 
 //   public void turnLeft() {
 //     // drive.tankDrive(0.60, -0.60);
@@ -154,4 +168,5 @@ public class DriveTrain extends SubsystemBase {
 //     SmartDashboard.putNumber("rightFront", Constants.rightFront.get());
 //     SmartDashboard.putNumber("rightFollower", Constants.leftFollower.get());
 //   }
+*/
 }
