@@ -34,6 +34,8 @@ public final class Constants {
     public static final int CAN_Shooter           = 10;
     public static final int CAN_Intake            = 11;
 
+    public static final int CAN_Climber           = 12;
+
     // PWN Pin Mapping
 
     public static final int PWM_LED_STRIP         = 0;
