@@ -8,14 +8,23 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.internal.groups.EmptyToBall1Transition;
 
 public class Transport extends SubsystemBase 
 {
+    // NOTE: Until we have all the beam break sensors in, we might have
+    //       an unknown state after shooting.
+
+    public enum States { Empty, Idle, IntakeOn, AdvanceBalls, Full, Unknown };
+
+    private final CANSparkMax  m_intakeMotor          = new CANSparkMax( Constants.CAN_Intake, MotorType.kBrushless );
     private final WPI_TalonSRX m_transportMotorStage1 = new WPI_TalonSRX( Constants.CAN_TransportStage1 );
     private final WPI_TalonSRX m_transportMotorStage2 = new WPI_TalonSRX( Constants.CAN_TransportStage2 );
     private final WPI_TalonSRX m_transportMotorStage3 = new WPI_TalonSRX( Constants.CAN_TransportStage3 );
@@ -36,12 +45,8 @@ public class Transport extends SubsystemBase
     public static final byte SENSOR_4 = 0b00010111;
     public static final byte SENSOR_5 = 0b00001111;
 
-    private States state = States.empty;
-
-    public enum States 
-    {
-        errorState, empty, toBall1, ball1, ball2, ball3, ball4, ball5;
-    }
+    private States m_State     = States.Empty;
+    private double m_StartTime = 0;
 
     // //////////////////////////////////////////////////////////////////////
     //
@@ -52,8 +57,57 @@ public class Transport extends SubsystemBase
 
     }
 
+    @Override
+    public void periodic() 
+    {
+        switch( m_State )
+        {
+            case IntakeOn:
+            {
+                if (IsBeamBroken( 0 ))
+                {
+                    TurnAllOff();
+                    m_State = States.Idle;
+                }
+                break;
+            }
+
+            case AdvanceBalls:
+            {
+                double dElapsedTime = m_StartTime - Timer.getFPGATimestamp();
+
+                if (IsBeamBroken(4) || dElapsedTime >= Constants.TransportBallMoveTime )
+                {
+                    m_transportMotorStage1.set( 0 );
+                    m_transportMotorStage2.set( 0 );
+                    m_transportMotorStage3.set( 0 );
+                }
+
+                if (IsBeamBroken( 4 ))
+                    m_State = States.Full;
+                else 
+                    m_State = States.Idle;
+        
+            }
+        }
+
+    }
+
     // //////////////////////////////////////////////////////////////////////
-    //
+    // Read Single Beam Brake sensor
+    // //////////////////////////////////////////////////////////////////////
+
+    public boolean IsBeamBroken( int sensorNumber )
+    {
+        // Removing range check for performance
+        //sensorNumber = Math.min( sensorNumber, Constants.NUM_BALLS );
+        //sensorNumber = Math.min( sensorNumber, 0 );
+
+        return m_Sensor[sensorNumber].get();
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    // get all indicators in a single byte
     // //////////////////////////////////////////////////////////////////////
 
     public byte GetBallIndicators()
@@ -70,9 +124,87 @@ public class Transport extends SubsystemBase
     }
 
     // //////////////////////////////////////////////////////////////////////
-    //
+    // 
     // //////////////////////////////////////////////////////////////////////
 
+    public void TurnAllOff()
+    {
+        // Turn All motors off
+
+        m_intakeMotor         .set( 0 );
+        m_transportMotorStage1.set( 0 );
+        m_transportMotorStage2.set( 0 );
+        m_transportMotorStage3.set( 0 );
+    }
+
+    // //////////////////////////////////////////////////////////////////////
+    // Use for Shooting?
+    // //////////////////////////////////////////////////////////////////////
+
+    public void TurnAllTransportOn()
+    {
+        // Turn Transport motors on 
+
+        //m_intakeMotor         .set( 0 );
+        m_transportMotorStage1.set( Constants.TransportPower );
+        m_transportMotorStage2.set( Constants.TransportPower );
+        m_transportMotorStage3.set( Constants.TransportPower );
+    }    
+
+    // //////////////////////////////////////////////////////////////////////
+    // 
+    // //////////////////////////////////////////////////////////////////////
+
+    public void TurnIntakeOn()
+    {
+        // Turn all motors off just in case 
+        // If Ball already in stage 1, don't turn on intake.
+
+        if (IsBeamBroken( 0 ))
+            return;
+
+        // Turn on both intake and First Stage
+
+        m_intakeMotor         .set( Constants.IntakePower    );
+        m_transportMotorStage1.set( Constants.TransportPower );
+    }
+
+    
+    // //////////////////////////////////////////////////////////////////////
+    // Use only if ball in 1st stage.
+    // //////////////////////////////////////////////////////////////////////
+
+    public void AdvanceBalls()
+    {
+        // Turn all motors off just in case.
+
+        TurnAllOff();
+
+        if ((m_State == States.Full) || 
+             !IsBeamBroken( 0 ) ||          // No ball in 1st stage
+              IsBeamBroken( 4 ))            // Ball in 3rd stage already (full?)
+        {
+            return;
+        }
+
+        // Move all balls forward 1 spot (time based for now)
+
+        m_StartTime = Timer.getFPGATimestamp();
+        m_State     = States.AdvanceBalls;
+
+        // Turn on all Stages
+
+        m_transportMotorStage1.set( Constants.TransportPower );
+        m_transportMotorStage2.set( Constants.TransportPower );
+        m_transportMotorStage3.set( Constants.TransportPower );
+    }
+
+
+
+
+
+
+/*
 
     public void transportMachine() 
     {
@@ -128,10 +260,10 @@ public class Transport extends SubsystemBase
             }
         }
     }
-
+*/
     public void Stage1In() 
     {
-        m_transportMotorStage1.set(0.25);
+        m_transportMotorStage1.set( 0.25);
     }
 
     public void Stage1Out() 

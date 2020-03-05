@@ -20,11 +20,11 @@ import frc.robot.Limelight.LimelightData;
 
 public class Turret extends SubsystemBase 
 {
-    private static final CANSparkMax  m_NEOmotor = new CANSparkMax( Constants.CAN_Turret, MotorType.kBrushless);
+    private static final CANSparkMax  m_motor = new CANSparkMax( Constants.CAN_Turret, MotorType.kBrushless);
 
     private Limelight       m_limelight;
-    private CANEncoder      m_NEOencoder;
-    private double          m_encoderPosition   = 0.0;      //  = NEOencoder.getPosition();
+ // private CANEncoder      m_encoder;
+ // private double          m_encoderPosition   = 0.0;      //  = NEOencoder.getPosition();
     private PIDController   m_pid;
 
     /**
@@ -47,8 +47,7 @@ public class Turret extends SubsystemBase
     // Creates a PIDController with gains kP, kI, and kD
 
     public Turret() 
-    {
-        m_NEOencoder = new CANEncoder( m_NEOmotor);
+    {// m_encoder    = new CANEncoder( m_motor );
         m_pid        = new PIDController(kP, kI, kD);
         m_limelight  = new Limelight();
 
@@ -57,23 +56,23 @@ public class Turret extends SubsystemBase
 
     public void turretLeft() 
     {
-        m_NEOmotor.set( Constants.TurretSpeed );
+        m_motor.set( Constants.IntakePower );
     }
 
     public void turretRight() 
     {
-        m_NEOmotor.set( -Constants.TurretSpeed );
+        m_motor.set( -Constants.IntakePower );
     }
 
     public void turretStop() 
     {
-        m_NEOmotor.set(0);
+        m_motor.set(0);
     }
 
     public double applyLimits(double power) 
     {
-        power = Math.min( power,  Constants.TurretSpeed );
-        power = Math.max( power, -Constants.TurretSpeed );
+        power = Math.min( power,  Constants.IntakePower );
+        power = Math.max( power, -Constants.IntakePower );
 
         return power;
     }
@@ -96,7 +95,7 @@ public class Turret extends SubsystemBase
     public void FindTarget() 
     {
         double pidOut = getPid();
-        m_NEOmotor.setVoltage( applyLimits( pidOut ));
+        m_motor.setVoltage( applyLimits( pidOut ));
 
         // TODO: Do we want to see the raw pidOut value or clipped value (after applyLimits)?
 

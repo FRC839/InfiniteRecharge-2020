@@ -15,6 +15,38 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
+// import java.lang.Math;
+
+public class DriveTrain extends SubsystemBase 
+{
+    /*
+      * The DriveTrain subsystem incorporates the sensors and actuators attached to
+      * the robots chassis. These include four drive motors, a left and right encoder
+      * and a gyro.
+      */
+
+    private final SpeedController leftSide  = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Left1  ),
+                                                                        new WPI_TalonFX( Constants.CAN_DriveTrain_Left2  ));
+    private final SpeedController rightSide = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Right1 ),
+                                                                        new WPI_TalonFX( Constants.CAN_DriveTrain_Right2 ));
+
+    private final DifferentialDrive drive = new DifferentialDrive( leftSide, rightSide );
+
+    public DriveTrain() 
+    {
+    }
+      
+    /**
+     * Tank style driving for the DriveTrain.
+     *
+     * @param left  Speed in range [-1,1]
+     * @param right Speed in range [-1,1]
+     */
+    public void drive(final double left, final double right) 
+    {
+      drive.tankDrive(left, right);
+    }
+
 /*
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -27,40 +59,8 @@ import frc.robot.subsystems.Limelight;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-*/
 
-// import java.lang.Math;
 
-public class DriveTrain extends SubsystemBase 
-{
-  /*
-   * The DriveTrain subsystem incorporates the sensors and actuators attached to
-   * the robots chassis. These include four drive motors, a left and right encoder
-   * and a gyro.
-   */
-  
-  private final SpeedController leftSide  = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Left1  ),
-                                                                      new WPI_TalonFX( Constants.CAN_DriveTrain_Left2  ));
-  private final SpeedController rightSide = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Right1 ),
-                                                                      new WPI_TalonFX( Constants.CAN_DriveTrain_Right2 ));
-
-  private final DifferentialDrive drive = new DifferentialDrive( leftSide, rightSide );
-
-  public DriveTrain() 
-  {
-  }
-    
-  /**
-   * Tank style driving for the DriveTrain.
-   *
-   * @param left  Speed in range [-1,1]
-   * @param right Speed in range [-1,1]
-   */
-  public void drive(final double left, final double right) 
-  {
-    drive.tankDrive(left, right);
-  }
-/*
   public Limelight limeLight;
 
   public static Limelight m_limelight;
