@@ -12,6 +12,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,24 +22,34 @@ public class Climber extends SubsystemBase
 {
     public enum Direction { Stopped, Up, Down };
 
-    private static final CANSparkMax  m_motor = new CANSparkMax( Constants.CAN_Climber, MotorType.kBrushless );
+    private static final CANSparkMax    m_motor          = new CANSparkMax   ( Constants.CAN_Climber, MotorType.kBrushless );
+    private static final DoubleSolenoid m_climberSolenoid= new DoubleSolenoid( Constants.CAN_PCM, 
+                                                                               Constants.SOL_CLIMB_BRAKE_FORWARD, 
+                                                                               Constants.SOL_CLIMB_BRAKE_REVERSE );
 
     private CANEncoder  m_encoder             = null;
     private boolean     m_bOverrideLimits     = false;
     private double      m_lastEncoderPosition = 0.0;
     private Direction   m_Direction           = Direction.Stopped;
 
-    private DoubleSolenoid climberSolenoid;
-
     public Climber() 
     {
         m_encoder = m_motor.getEncoder();
-        climberSolenoid = new DoubleSolenoid(1, 0, 1);
     }
 
     @Override
     public void periodic() 
     {
+        // ------------------------------------------------------------------
+        // Check to see if we are at the end of the match.  If so, Stop climber and lock
+        // ------------------------------------------------------------------
+
+        if (Timer.getMatchTime() <= 2 )
+        {
+            Stop();
+            return;
+        }
+
         // ------------------------------------------------------------------
         // Read Encoder and determine direction
         // ------------------------------------------------------------------
@@ -103,18 +114,29 @@ public class Climber extends SubsystemBase
 
     public void Up() 
     {
+        ClimberPistonUnlock();
+
+        // Give some time for the Solenoid to move out of the way
+        Timer.delay( 1 );
+
         m_motor.set(-Constants.ClimberPower);
     }
 
     public void Down() 
     {
+        ClimberPistonUnlock();
+
+        // Give some time for the Solenoid to move out of the way
+        Timer.delay( 1 );
+
         m_motor.set(Constants.ClimberPower);
     }
 
     public void Stop() 
     {
-        
         m_motor.set(0);
+
+        ClimberPistonLock();
     }
 
     public void OverrideLimits( boolean bOverride )
@@ -124,11 +146,11 @@ public class Climber extends SubsystemBase
 
     public void ClimberPistonLock()
     {
-        climberSolenoid.set(Value.kForward);
+        m_climberSolenoid.set(Value.kForward);
     }
 
     public void ClimberPistonUnlock()
     {
-        climberSolenoid.set(Value.kReverse);
+        m_climberSolenoid.set(Value.kReverse);
     }
 }

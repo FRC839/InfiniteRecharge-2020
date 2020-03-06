@@ -7,7 +7,6 @@
 
 package frc.robot.subsystems;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -39,10 +38,10 @@ public class Turret extends SubsystemBase
     private final double kI = 0.12; // kI = 1.2 * Ku / Tu
     private final double kD = 0.000675; // kD = 3 * Ku * Tu / 40
 
-    private final double DEGREES_PER_UNIT = 54 / 59.6;
-    private final double TICKS_PER_DEGREE = 839 / 360;
-    private final double SPEED_LIMIT = 0.01;
-    private final double TOLERANCE_BAND = 5; // ticks
+    // private final double DEGREES_PER_UNIT = 54 / 59.6;
+    // private final double TICKS_PER_DEGREE = 839 / 360;
+    // private final double SPEED_LIMIT = 0.01;
+    // private final double TOLERANCE_BAND = 5; // ticks
 
     // Creates a PIDController with gains kP, kI, and kD
 
@@ -97,9 +96,7 @@ public class Turret extends SubsystemBase
         double pidOut = getPid();
         m_motor.setVoltage( applyLimits( pidOut ));
 
-        // TODO: Do we want to see the raw pidOut value or clipped value (after applyLimits)?
-
-        SmartDashboard.putNumber("pidOut", pidOut );
+        SmartDashboard.putNumber("pidOut raw", pidOut );
     }
 
     public boolean isOnTarget() 

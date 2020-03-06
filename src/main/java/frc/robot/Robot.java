@@ -7,21 +7,10 @@
 
 package frc.robot;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.limelight.LightFollow;
-import frc.robot.commands.transport.TransportCmd;
-import frc.robot.subsystems.LEDSubsystem;
-import frc.robot.subsystems.Transport;
-// import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Turret;
-import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -35,12 +24,6 @@ public class Robot extends TimedRobot
   
     private Command              m_autonomousCommand;
     private RobotContainer       m_robotContainer;
-
-    // Temp
-    LightFollow cmdTurret = null;
-
-    private Transport    m_transport    = new Transport();
-    private LEDSubsystem m_ledSubsystem = new LEDSubsystem();
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -102,7 +85,7 @@ public class Robot extends TimedRobot
       // schedule the autonomous command (example)
       if (m_autonomousCommand != null) 
       {
-        m_autonomousCommand.schedule();
+            m_autonomousCommand.schedule();
       }
     }
 
@@ -124,12 +107,8 @@ public class Robot extends TimedRobot
 
       if (m_autonomousCommand != null) 
       {
-        m_autonomousCommand.cancel();
+            m_autonomousCommand.cancel();
       }
-
-      // todo: this needs to be bound to a button or default command
-     // cmdTurret = new LightFollow();
-      //cmdTurret.schedule();
     }
 
     /**
@@ -142,13 +121,6 @@ public class Robot extends TimedRobot
     @Override
     public void testInit() 
     {
-      // Cancels all running commands at the start of test mode.
-      CommandScheduler.getInstance().cancelAll();
-
-      m_autonomousCommand = new TransportCmd( m_transport, m_ledSubsystem );
-
-      m_autonomousCommand.schedule();
-      
 
     }
 
@@ -159,7 +131,6 @@ public class Robot extends TimedRobot
     @Override
     public void testPeriodic() 
     {
-      CommandScheduler.getInstance().run();
     }
 
 }

@@ -8,40 +8,47 @@
 package frc.robot.commands.intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Transport;
+import frc.robot.subsystems.IntakeArm;
 
-public class IntakePistonCommand extends CommandBase {
-  private final Transport m_transport;
+public class IntakePistonCommand extends CommandBase 
+{
+    private final IntakeArm m_intakeArm;
 
-  /**
-   * Creates a new intakeInCommand. new one
-   */
-  public IntakePistonCommand(Transport transport) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_transport = transport;
-    addRequirements(m_transport);
-  }
+    /**
+    * Creates a new intakeInCommand. new one
+    */
+    public IntakePistonCommand( IntakeArm intakeArm ) 
+    {
+        // Use addRequirements() here to declare subsystem dependencies.
+        m_intakeArm = intakeArm;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    m_transport.IntakePistonDown();
-  }
+        addRequirements( m_intakeArm );
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() 
+    {
+        m_intakeArm.IntakePistonDown();
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    m_transport.IntakePistonUp();
-  }
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() 
+    {
+    }
 
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    // Called once the command ends or is interrupted.
+    @Override
+    public void end(boolean interrupted) 
+    {
+        m_intakeArm.IntakePistonUp();
+    }
+
+    // Returns true when the command should end.
+    @Override
+    public boolean isFinished() 
+    {
+        return false;
+    }
 }

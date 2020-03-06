@@ -205,7 +205,7 @@ public class UniversalJoystick extends XboxController
         
         if (aMap != null)
         {
-            // -=>TODO: should check to see if nBtn is valid
+            // should check to see if nBtn is valid
             return aMap[ nBtn ];
         }
         

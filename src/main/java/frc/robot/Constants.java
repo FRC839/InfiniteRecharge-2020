@@ -21,6 +21,8 @@ public final class Constants {
 
     // CAN id Mapping
 
+    public static final int CAN_PCM               = 1;
+
     public static final int CAN_DriveTrain_Left1  = 2;
     public static final int CAN_DriveTrain_Left2  = 3;
     public static final int CAN_DriveTrain_Right1 = 4;
@@ -79,6 +81,14 @@ public final class Constants {
     public static final int Shooter_MaxPower  = 1; 
     public static final int Shooter_MinPower  = -1;
     public static final int Shooter_MaxRPM    = 5700;
-	public static final double TransportBallMoveTime = 0.250;
+    public static final double TransportBallMoveTime = 0.250;
+    
+    // Pneumatics
+    
+    public static final int SOL_CLIMB_BRAKE_FORWARD = 0;
+    public static final int SOL_CLIMB_BRAKE_REVERSE = 1;
+
+	public static final int SOL_INTAKE_ARM_FORWARD  = 2;
+	public static final int SOL_INTAKE_ARM_REVERSE  = 3;
 
 }

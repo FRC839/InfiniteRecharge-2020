@@ -5,30 +5,33 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.shooter;
+package frc.robot.commands.transport;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Transport;
 
-public class ShootCommand extends CommandBase 
+public class MoveAllCommand extends CommandBase 
 {
+    private final Transport           m_transport;
+    private final Transport.Direction m_direction;
 
-    private final Shooter m_shooter;
     /**
      * Creates a new intakeInCommand. test
      */
-    public ShootCommand(Shooter shooter) 
+    public MoveAllCommand(Transport shooter, Transport.Direction direction ) 
     {
         // Use addRequirements() here to declare subsystem dependencies.
-        m_shooter = shooter;
-        addRequirements(m_shooter);
+        m_transport = shooter;
+        m_direction = direction;
+
+        addRequirements( m_transport );
     }
 
     // Called when the command is initially scheduled.
     @Override
     public void initialize() 
     {
-        m_shooter.SetRPM(m_shooter.maxRPM);
+        m_transport.TurnAllTransportOn( m_direction );
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +44,7 @@ public class ShootCommand extends CommandBase
     @Override
     public void end(boolean interrupted) 
     {
-        m_shooter.SetRPM(0);
+        m_transport.TurnAllOff();
     }
 
     // Returns true when the command should end.

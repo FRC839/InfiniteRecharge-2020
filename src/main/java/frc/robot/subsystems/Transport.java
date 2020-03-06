@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.commands.internal.groups.EmptyToBall1Transition;
 
 public class Transport extends SubsystemBase 
 {
     // NOTE: Until we have all the beam break sensors in, we might have
     //       an unknown state after shooting.
 
-    public enum States { Empty, Idle, IntakeOn, AdvanceBalls, Full, Unknown };
+    public enum States    { Empty, Idle, IntakeOn, AdvanceBalls, Full, Unknown };
+    public enum Direction { Forward, Backward };
 
     private final CANSparkMax  m_intakeMotor          = new CANSparkMax( Constants.CAN_Intake, MotorType.kBrushless );
     private final WPI_TalonSRX m_transportMotorStage1 = new WPI_TalonSRX( Constants.CAN_TransportStage1 );
@@ -98,6 +98,9 @@ public class Transport extends SubsystemBase
                     m_State = States.Idle;
         
             }
+
+            default:
+                break;
         }
 
     }
@@ -152,14 +155,15 @@ public class Transport extends SubsystemBase
     // Use for Shooting?
     // //////////////////////////////////////////////////////////////////////
 
-    public void TurnAllTransportOn()
+    public void TurnAllTransportOn( Direction direction )
     {
         // Turn Transport motors on 
 
-        //m_intakeMotor         .set( 0 );
-        m_transportMotorStage1.set( Constants.TransportPower );
-        m_transportMotorStage2.set( Constants.TransportPower );
-        m_transportMotorStage3.set( Constants.TransportPower );
+        int sign = (direction == Direction.Forward) ? 1 : -1;
+
+        m_transportMotorStage1.set( Constants.TransportPower * sign );
+        m_transportMotorStage2.set( Constants.TransportPower * sign );
+        m_transportMotorStage3.set( Constants.TransportPower * sign );
     }    
 
     // //////////////////////////////////////////////////////////////////////
