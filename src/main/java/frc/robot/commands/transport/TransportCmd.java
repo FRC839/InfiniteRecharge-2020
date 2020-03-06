@@ -34,7 +34,7 @@ public class TransportCmd extends CommandBase
     @Override
     public void execute() 
     {
-        m_ledSubsystem.ShowBallStatus( m_transport.GetBallIndicators() );
+    //    m_ledSubsystem.ShowBallStatus( m_transport.GetBallIndicators() );
     }
 
     // Called once the command ends or is interrupted.

@@ -13,12 +13,17 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.climber.ClimberDownCommand;
 import frc.robot.commands.drivetrain.TankDrive;
+import frc.robot.commands.intake.IntakeCommand;
+import frc.robot.commands.intake.IntakePistonCommand;
 // import frc.robot.commands.intake.IntakeInCommand;
 import frc.robot.commands.limelight.LightFollow;
+import frc.robot.commands.shooter.ShootCommand;
 import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -35,10 +40,15 @@ public class RobotContainer
   // The robot's commands are defined here...
 
 
-  // public final Intake intake = new Intake();
-  // private final Flywheel flywheel = new Flywheel();
+  public final DriveTrain m_driveTrain = new DriveTrain();
+  public final Transport m_transport = new Transport();
+  public final Shooter m_shooter = new Shooter();
+  public final Climber m_climber = new Climber();
 
-  public UniversalJoystick joystick = new UniversalJoystick(0);
+  public final Compressor m_compressor = new Compressor(1);
+
+  public UniversalJoystick joystickDrive = new UniversalJoystick(0);
+  public UniversalJoystick joystickAccessory = new UniversalJoystick(1);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -46,13 +56,14 @@ public class RobotContainer
   public RobotContainer() 
   {
     // Configure the button bindings
-/*
-    m_driveTrain.setDefaultCommand( new TankDrive( () -> joystick.getY(Hand.kLeft), 
-                                                   () -> joystick.getY(Hand.kRight), 
+
+    m_driveTrain.setDefaultCommand( new TankDrive( () -> joystickDrive.getY(Hand.kLeft), 
+                                                   () -> joystickDrive.getY(Hand.kRight), 
                                                    m_driveTrain ));
 
     configureButtonBindings();
-    */
+
+    m_compressor.setClosedLoopControl(true);
   }
 
   /**
@@ -64,13 +75,12 @@ public class RobotContainer
   private void configureButtonBindings() 
   {
 
-    final JoystickButton aBtn = new JoystickButton(joystick, 1);
-
-    // final JoystickButton bBtn = new JoystickButton(joystick, 2);
-    // final JoystickButton xBtn = new JoystickButton(joystick, 3);
-    // final JoystickButton yBtn = new JoystickButton(joystick, 4);
-    // final JoystickButton LBBtn = new JoystickButton(joystick, 5);
-    // final JoystickButton RBBtn = new JoystickButton(joystick, 6);
+    final JoystickButton grnBtn = new JoystickButton(joystickAccessory, 1);
+    final JoystickButton redBtn = new JoystickButton(joystickAccessory, 2);
+    final JoystickButton bluBtn = new JoystickButton(joystickAccessory, 3);
+    final JoystickButton yelBtn = new JoystickButton(joystickAccessory, 4);
+    final JoystickButton LBBtn = new JoystickButton(joystickDrive, 5);
+    final JoystickButton RBBtn = new JoystickButton(joystickDrive, 6);
     // final JoystickButton BackBtn = new JoystickButton(joystick, 7);
     // final JoystickButton StartBtn = new JoystickButton(joystick, 8);
     // final JoystickButton LStickBtn = new JoystickButton(joystick, 9);
@@ -80,7 +90,12 @@ public class RobotContainer
     // final JoystickButton ModeABtn = new JoystickButton(joystick, 13);
     // final JoystickButton ModeBBtn = new JoystickButton(joystick, 14);
 
-    aBtn.whileHeld(new LightFollow());
+    redBtn.whileHeld(new LightFollow());                      // Accessory
+    RBBtn.whileHeld(new IntakeCommand(m_transport));        // Drive
+    bluBtn.whileHeld(new ShootCommand(m_shooter));            // Accessory
+    LBBtn.whileHeld(new IntakePistonCommand(m_transport));  // Drive
+    yelBtn.whileHeld(new ClimberDownCommand(m_climber));      // Accessory
+    grnBtn.whileHeld(new ClimberDownCommand(m_climber));      // Accessory
   }
 
   /**

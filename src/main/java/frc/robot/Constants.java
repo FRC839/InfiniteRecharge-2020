@@ -58,7 +58,7 @@ public final class Constants {
     //      Spool Diameter      : 1.225" (guess)  [ Circumference: 3.85 ]
     //      Rope Length         : 45" of travel 
     //      Encoder Resolution  : 42 per rev
-    //      Gear Box on Motor   : 20:1  (need to verify)
+    //      Gear Box on Motor   : 20:1
 
 	public static final double CLIMBER_MAX_ENCODER_VALUE = 9800;     
 	public static final double CLIMBER_MIN_ENCODER_VALUE = 0;
@@ -72,12 +72,13 @@ public final class Constants {
 	public static final double TurretPower        = 0.2;
     public static final double IntakePower        = 1;
     public static final double TransportPower     = 1;
+    public static final double ClimberPower       = 0.25;
     
     // Shooter Constants
 
     public static final int Shooter_MaxPower  = 1; 
     public static final int Shooter_MinPower  = -1;
     public static final int Shooter_MaxRPM    = 5700;
-	public static final double TransportBallMoveTime = 0;
+	public static final double TransportBallMoveTime = 0.250;
 
 }

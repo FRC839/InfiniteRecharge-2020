@@ -11,6 +11,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -26,9 +28,12 @@ public class Climber extends SubsystemBase
     private double      m_lastEncoderPosition = 0.0;
     private Direction   m_Direction           = Direction.Stopped;
 
+    private DoubleSolenoid climberSolenoid;
+
     public Climber() 
     {
         m_encoder = m_motor.getEncoder();
+        climberSolenoid = new DoubleSolenoid(1, 0, 1);
     }
 
     @Override
@@ -98,21 +103,32 @@ public class Climber extends SubsystemBase
 
     public void Up() 
     {
-        m_motor.set(-1);
+        m_motor.set(-Constants.ClimberPower);
     }
 
     public void Down() 
     {
-        m_motor.set(1);
+        m_motor.set(Constants.ClimberPower);
     }
 
     public void Stop() 
     {
+        
         m_motor.set(0);
     }
 
     public void OverrideLimits( boolean bOverride )
     {
         m_bOverrideLimits = bOverride;
+    }
+
+    public void ClimberPistonLock()
+    {
+        climberSolenoid.set(Value.kForward);
+    }
+
+    public void ClimberPistonUnlock()
+    {
+        climberSolenoid.set(Value.kReverse);
     }
 }

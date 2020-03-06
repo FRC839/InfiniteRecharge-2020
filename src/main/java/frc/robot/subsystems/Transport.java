@@ -12,7 +12,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.commands.internal.groups.EmptyToBall1Transition;
@@ -28,12 +30,15 @@ public class Transport extends SubsystemBase
     private final WPI_TalonSRX m_transportMotorStage1 = new WPI_TalonSRX( Constants.CAN_TransportStage1 );
     private final WPI_TalonSRX m_transportMotorStage2 = new WPI_TalonSRX( Constants.CAN_TransportStage2 );
     private final WPI_TalonSRX m_transportMotorStage3 = new WPI_TalonSRX( Constants.CAN_TransportStage3 );
-
+/*
     private final DigitalInput m_Sensor[]  =  { new DigitalInput( Constants.DIO_BeamBreak5 ), 
                                                 new DigitalInput( Constants.DIO_BeamBreak4 ),
                                                 new DigitalInput( Constants.DIO_BeamBreak3 ),
                                                 new DigitalInput( Constants.DIO_BeamBreak2 ),
-                                                new DigitalInput( Constants.DIO_BeamBreak1 ) };
+ */
+ 
+    private final DigitalInput m_BeamBreak1 = new DigitalInput( Constants.DIO_BeamBreak1 );
+//};
 
     public static final byte READABLE_VALUE = 0b00011111; // Will ultimately be dynamic (and no longer a constant)
 
@@ -48,13 +53,15 @@ public class Transport extends SubsystemBase
     private States m_State     = States.Empty;
     private double m_StartTime = 0;
 
+    private DoubleSolenoid intakeSolenoid;
+
     // //////////////////////////////////////////////////////////////////////
     //
     // //////////////////////////////////////////////////////////////////////
 
     public Transport() 
     {
-
+        intakeSolenoid = new DoubleSolenoid(1, 2, 3);
     }
 
     @Override
@@ -68,6 +75,8 @@ public class Transport extends SubsystemBase
                 {
                     TurnAllOff();
                     m_State = States.Idle;
+
+                    AdvanceBalls();
                 }
                 break;
             }
@@ -103,13 +112,15 @@ public class Transport extends SubsystemBase
         //sensorNumber = Math.min( sensorNumber, Constants.NUM_BALLS );
         //sensorNumber = Math.min( sensorNumber, 0 );
 
-        return m_Sensor[sensorNumber].get();
+        //    return m_Sensor[sensorNumber].get();
+
+        return m_BeamBreak1.get();
     }
 
     // //////////////////////////////////////////////////////////////////////
     // get all indicators in a single byte
     // //////////////////////////////////////////////////////////////////////
-
+/*
     public byte GetBallIndicators()
     {
         byte value = 0;
@@ -122,7 +133,7 @@ public class Transport extends SubsystemBase
 
         return value;
     }
-
+*/
     // //////////////////////////////////////////////////////////////////////
     // 
     // //////////////////////////////////////////////////////////////////////
@@ -163,6 +174,8 @@ public class Transport extends SubsystemBase
         if (IsBeamBroken( 0 ))
             return;
 
+        m_State = States.IntakeOn;
+
         // Turn on both intake and First Stage
 
         m_intakeMotor         .set( Constants.IntakePower    );
@@ -181,8 +194,9 @@ public class Transport extends SubsystemBase
         TurnAllOff();
 
         if ((m_State == States.Full) || 
-             !IsBeamBroken( 0 ) ||          // No ball in 1st stage
-              IsBeamBroken( 4 ))            // Ball in 3rd stage already (full?)
+             !IsBeamBroken( 0 )) 
+             // ||          // No ball in 1st stage
+              // IsBeamBroken( 4 ))            // Ball in 3rd stage already (full?)
         {
             return;
         }
@@ -199,10 +213,15 @@ public class Transport extends SubsystemBase
         m_transportMotorStage3.set( Constants.TransportPower );
     }
 
+    public void IntakePistonDown()
+    {
+        intakeSolenoid.set(Value.kForward);
+    }
 
-
-
-
+    public void IntakePistonUp()
+    {
+        intakeSolenoid.set(Value.kReverse);
+    }
 
 /*
 
