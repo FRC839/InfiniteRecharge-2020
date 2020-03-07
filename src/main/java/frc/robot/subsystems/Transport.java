@@ -53,15 +53,13 @@ public class Transport extends SubsystemBase
     private States m_State     = States.Empty;
     private double m_StartTime = 0;
 
-    private DoubleSolenoid intakeSolenoid;
-
     // //////////////////////////////////////////////////////////////////////
     //
     // //////////////////////////////////////////////////////////////////////
 
     public Transport() 
     {
-        intakeSolenoid = new DoubleSolenoid(1, 2, 3);
+        m_intakeMotor.restoreFactoryDefaults();
     }
 
     @Override
@@ -85,7 +83,8 @@ public class Transport extends SubsystemBase
             {
                 double dElapsedTime = m_StartTime - Timer.getFPGATimestamp();
 
-                if (IsBeamBroken(4) || dElapsedTime >= Constants.TransportBallMoveTime )
+                // if (IsBeamBroken(4) || dElapsedTime >= Constants.TransportBallMoveTime )
+                if (dElapsedTime >= Constants.TransportBallMoveTime )
                 {
                     m_transportMotorStage1.set( 0 );
                     m_transportMotorStage2.set( 0 );
@@ -117,7 +116,7 @@ public class Transport extends SubsystemBase
 
         //    return m_Sensor[sensorNumber].get();
 
-        return m_BeamBreak1.get();
+        return !m_BeamBreak1.get();
     }
 
     // //////////////////////////////////////////////////////////////////////
@@ -162,7 +161,7 @@ public class Transport extends SubsystemBase
         int sign = (direction == Direction.Forward) ? 1 : -1;
 
         m_transportMotorStage1.set( Constants.TransportPower * sign );
-        m_transportMotorStage2.set( Constants.TransportPower * sign );
+        m_transportMotorStage2.set( -Constants.TransportPower * sign );
         m_transportMotorStage3.set( Constants.TransportPower * sign );
     }    
 
@@ -174,6 +173,8 @@ public class Transport extends SubsystemBase
     {
         // Turn all motors off just in case 
         // If Ball already in stage 1, don't turn on intake.
+
+        System.out.println("Transport.TurnIntakeOn");
 
         if (IsBeamBroken( 0 ))
             return;
@@ -202,6 +203,7 @@ public class Transport extends SubsystemBase
              // ||          // No ball in 1st stage
               // IsBeamBroken( 4 ))            // Ball in 3rd stage already (full?)
         {
+            System.out.println("ADV: Ball Not in Intake");
             return;
         }
 
@@ -213,19 +215,19 @@ public class Transport extends SubsystemBase
         // Turn on all Stages
 
         m_transportMotorStage1.set( Constants.TransportPower );
-        m_transportMotorStage2.set( Constants.TransportPower );
+        m_transportMotorStage2.set( -Constants.TransportPower );
         m_transportMotorStage3.set( Constants.TransportPower );
     }
 
-    public void IntakePistonDown()
-    {
-        intakeSolenoid.set(Value.kForward);
-    }
+    // public void IntakePistonDown()
+    // {
+    //     intakeSolenoid.set(Value.kForward);
+    // }
 
-    public void IntakePistonUp()
-    {
-        intakeSolenoid.set(Value.kReverse);
-    }
+    // public void IntakePistonUp()
+    // {
+    //     intakeSolenoid.set(Value.kReverse);
+    // }
 
 /*
 

@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Limelight.Limelight;
+import frc.robot.Limelight.LimelightData;
 import frc.robot.commands.climber.ClimberDownCommand;
 import frc.robot.commands.climber.ClimberUpCommand;
 import frc.robot.commands.drivetrain.TankDrive;
@@ -33,16 +35,27 @@ public class RobotContainer
 {
     // The robot's commands are defined here...
 
-    public final DriveTrain   m_driveTrain     = new DriveTrain();
-    public final Transport    m_transport      = new Transport();
-    public final Shooter      m_shooter        = new Shooter();
-    public final Climber      m_climber        = new Climber();
-    public final IntakeArm    m_intakeArm      = new IntakeArm();
+    public final DriveTrain    m_driveTrain     = new DriveTrain();
+    public final Transport     m_transport      = new Transport();
+    public final Shooter       m_shooter        = new Shooter();
+    public final Climber       m_climber        = new Climber();
+    public final IntakeArm     m_intakeArm      = new IntakeArm();
+    public final Limelight     m_limelight      = new Limelight();
+    public final Turret        m_turret         = new Turret();
 
     public final Compressor   m_compressor     = new Compressor(1);
 
     public UniversalJoystick joystickDrive     = new UniversalJoystick(0);
     public UniversalJoystick joystickAccessory = new UniversalJoystick(1);
+
+    public JoystickButton m_grnBtn;
+    public JoystickButton m_redBtn;
+    public JoystickButton m_bluBtn;
+    public JoystickButton m_yelBtn;
+
+    public JoystickButton m_LBBtn;
+    public JoystickButton m_RBBtn;
+
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -58,7 +71,10 @@ public class RobotContainer
 
         configureButtonBindings();
 
-        m_compressor.setClosedLoopControl(true);
+        m_compressor.setClosedLoopControl(false);
+        m_compressor.stop();
+
+        m_limelight.getLimeLightValues();
     }
 
     /**
@@ -70,13 +86,13 @@ public class RobotContainer
     private void configureButtonBindings() 
     {
 
-        final JoystickButton grnBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnA );
-        final JoystickButton redBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnB );
-        final JoystickButton bluBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnX );
-        final JoystickButton yelBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnY );
+        m_grnBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnA );
+        m_redBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnB );
+        m_bluBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnX );
+        m_yelBtn = new JoystickButton( joystickAccessory, UniversalJoystick.kBtnY );
 
-        final JoystickButton LBBtn  = new JoystickButton( joystickDrive, UniversalJoystick.kBtnLB );
-        final JoystickButton RBBtn  = new JoystickButton( joystickDrive, UniversalJoystick.kBtnRB );
+        m_LBBtn  = new JoystickButton( joystickDrive, UniversalJoystick.kBtnLB );
+        m_RBBtn  = new JoystickButton( joystickDrive, UniversalJoystick.kBtnRB );
 
         // final JoystickButton BackBtn   = new JoystickButton(joystick, UniversalJoystick.kBtnBack  );
         // final JoystickButton StartBtn  = new JoystickButton(joystick, UniversalJoystick.kBtnStart );
@@ -87,14 +103,14 @@ public class RobotContainer
         // final JoystickButton ModeABtn  = new JoystickButton(joystick, UniversalJoystick.kBtnModeA );
         // final JoystickButton ModeBBtn  = new JoystickButton(joystick, UniversalJoystick.kBtnModeB );
 
-        LBBtn .whileHeld( new IntakePistonCommand( m_intakeArm ));  // Drive
-        RBBtn .whileHeld( new IntakeCommand( m_transport ));        // Drive
+        m_LBBtn .whileHeld( new IntakePistonCommand( m_intakeArm ));  // Drive
+        m_RBBtn .whileHeld( new IntakeCommand( m_transport ));        // Drive
 
-        redBtn.whileHeld( new LightFollow() );                      // Accessory
-        bluBtn.whileHeld( new ShootCommand( m_shooter ));           // Accessory
+        m_redBtn.whileHeld( new LightFollow() );                      // Accessory
+        m_bluBtn.whileHeld( new ShootCommand( m_shooter ));           // Accessory
         
-        yelBtn.whileHeld( new ClimberUpCommand  ( m_climber ));     // Accessory
-        grnBtn.whileHeld( new ClimberDownCommand( m_climber ));     // Accessory
+        m_yelBtn.whileHeld( new ClimberUpCommand  ( m_climber ));     // Accessory
+        m_grnBtn.whileHeld( new ClimberDownCommand( m_climber ));     // Accessory
     }
 
     /**

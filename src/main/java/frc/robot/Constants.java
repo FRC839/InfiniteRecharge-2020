@@ -72,8 +72,8 @@ public final class Constants {
     // Power Constants
 
 	public static final double TurretPower        = 0.2;
-    public static final double IntakePower        = 1;
-    public static final double TransportPower     = 1;
+    public static final double IntakePower        = 0.3;
+    public static final double TransportPower     = 0.75;
     public static final double ClimberPower       = 0.25;
     
     // Shooter Constants
@@ -81,7 +81,7 @@ public final class Constants {
     public static final int Shooter_MaxPower  = 1; 
     public static final int Shooter_MinPower  = -1;
     public static final int Shooter_MaxRPM    = 5700;
-    public static final double TransportBallMoveTime = 0.250;
+    public static final double TransportBallMoveTime = 1.000;
     
     // Pneumatics
     
