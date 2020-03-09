@@ -7,7 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
@@ -22,7 +24,7 @@ public class Turret extends SubsystemBase
     private static final CANSparkMax  m_motor = new CANSparkMax( Constants.CAN_Turret, MotorType.kBrushless);
 
     private Limelight       m_limelight;
- // private CANEncoder      m_encoder;
+    private CANEncoder      m_encoder;
  // private double          m_encoderPosition   = 0.0;      //  = NEOencoder.getPosition();
     private PIDController   m_pid;
 
@@ -46,21 +48,30 @@ public class Turret extends SubsystemBase
     // Creates a PIDController with gains kP, kI, and kD
 
     public Turret() 
-    {// m_encoder    = new CANEncoder( m_motor );
+    {   
+        m_encoder    = m_motor.getEncoder();
+        m_encoder.setPosition(0);
+        m_motor.setSoftLimit(SoftLimitDirection.kForward, 40);
+        m_motor.setSoftLimit(SoftLimitDirection.kReverse, -40);
         m_pid        = new PIDController(kP, kI, kD);
         m_limelight  = new Limelight();
 
-        // limelightData = new LimelightData(limelightX, limelightY, limelightArea);
+        //limelightData = new LimelightData(limelightX, limelightY, limelightArea);
     }
 
-    public void turretLeft() 
+    public void turretLeft(double power) 
     {
-        m_motor.set( Constants.IntakePower );
+        m_motor.set( power );
     }
 
-    public void turretRight() 
+    public void turretRight(double power) 
     {
-        m_motor.set( -Constants.IntakePower );
+        m_motor.set( -power );
+    }
+
+    public void turn(double power) 
+    {
+        m_motor.set( power );
     }
 
     public void turretStop() 
@@ -70,8 +81,8 @@ public class Turret extends SubsystemBase
 
     public double applyLimits(double power) 
     {
-        power = Math.min( power,  Constants.IntakePower );
-        power = Math.max( power, -Constants.IntakePower );
+        power = Math.min( power,  Constants.TurretPower );
+        power = Math.max( power, -Constants.TurretPower );
 
         return power;
     }
@@ -94,7 +105,7 @@ public class Turret extends SubsystemBase
     public void FindTarget() 
     {
         double pidOut = getPid();
-        m_motor.setVoltage( applyLimits( pidOut ));
+        m_motor.setVoltage( applyLimits( -pidOut ));
 
         SmartDashboard.putNumber("pidOut raw", pidOut );
     }
@@ -102,5 +113,10 @@ public class Turret extends SubsystemBase
     public boolean isOnTarget() 
     {
         return m_pid.atSetpoint();
+    }
+
+    public void LEDMode(int mode)
+    {
+        m_limelight.LEDMode(mode);
     }
 }

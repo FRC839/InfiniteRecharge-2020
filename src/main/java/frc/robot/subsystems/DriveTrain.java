@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.revrobotics.CANEncoder;
 
 // import java.lang.Math;
 
@@ -25,15 +28,26 @@ public class DriveTrain extends SubsystemBase
       * and a gyro.
       */
 
-    private final SpeedController leftSide  = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Left1  ),
+    private WPI_TalonFX m_talonLeft1 = new WPI_TalonFX( Constants.CAN_DriveTrain_Left1 );
+
+    private final SpeedController leftSide  = new SpeedControllerGroup( m_talonLeft1,
                                                                         new WPI_TalonFX( Constants.CAN_DriveTrain_Left2  ));
     private final SpeedController rightSide = new SpeedControllerGroup( new WPI_TalonFX( Constants.CAN_DriveTrain_Right1 ),
                                                                         new WPI_TalonFX( Constants.CAN_DriveTrain_Right2 ));
 
     private final DifferentialDrive drive = new DifferentialDrive( leftSide, rightSide );
 
+    
+
+    public double getPosition()
+    {
+        return m_talonLeft1.getSelectedSensorPosition();
+    }
+
     public DriveTrain() 
     {
+        m_talonLeft1.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+        
     }
       
     /**

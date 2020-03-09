@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -28,88 +29,25 @@ public class Climber extends SubsystemBase
                                                                                Constants.SOL_CLIMB_BRAKE_REVERSE );
 
     private CANEncoder  m_encoder             = null;
-    private boolean     m_bOverrideLimits     = false;
-    private double      m_lastEncoderPosition = 0.0;
-    private Direction   m_Direction           = Direction.Stopped;
-
-    public Climber() 
-    {
-        m_encoder = m_motor.getEncoder();
-    }
 
     @Override
     public void periodic() 
     {
-        // ------------------------------------------------------------------
-        // Check to see if we are at the end of the match.  If so, Stop climber and lock
-        // ------------------------------------------------------------------
-
-        if (Timer.getMatchTime() <= 2 )
-        {
-            Stop();
-            return;
-        }
-
-        // ------------------------------------------------------------------
-        // Read Encoder and determine direction
-        // ------------------------------------------------------------------
-
-        double encoderPos = m_encoder.getPosition();
-
-        if (encoderPos < m_lastEncoderPosition)
-            m_Direction = Direction.Down;
-        else if ( encoderPos > m_lastEncoderPosition)
-            m_Direction = Direction.Up;
-        //else
-        //    m_Direction = Direction.Stopped;
-        // If direction should be stopped, leave previous value
-
-        SmartDashboard.putNumber ( "Encoder Position"         , encoderPos );
-        SmartDashboard.putString ( "Encoder Direction"        , m_Direction.toString() );
-        SmartDashboard.putBoolean( "Overriding Climber Limits", m_bOverrideLimits );
-
-        // ------------------------------------------------------------------
-        // Enforce Encoder bases limits on climber
-        // ------------------------------------------------------------------
         
-        if ( m_bOverrideLimits )
-            return;
+        // if (Timer.getMatchTime() < 2)
+        //     Stop();
+    }
 
-        // ------------------------------------------------------------------
-        // Enforce Soft Limited (Based on Encoder value)
-        // ------------------------------------------------------------------
+    public Climber() 
+    {
+        m_encoder    = m_motor.getEncoder();
+        m_encoder.setPosition(0);
 
-        switch( m_Direction )        
-        {
-            case Up:
-            {
-                if ( encoderPos >= Constants.CLIMBER_MAX_ENCODER_VALUE )
-                {
-                    Stop();
-                }
-                break;
-            }
-
-            case Down:
-            {
-                if ( encoderPos <= Constants.CLIMBER_MIN_ENCODER_VALUE )
-                {
-                    Stop();
-                }
-                break;
-            }
-
-            default:
-                // Do nothing
-                break;
-        }
-
-        SmartDashboard.putNumber("Encoder Position" , encoderPos  );
-        SmartDashboard.putString("Encoder Direction", m_Direction.toString() );
-
-        // Save for later to use to determine direction 
-
-        m_lastEncoderPosition = encoderPos;
+        // m_motor.setSoftLimit(SoftLimitDirection.kForward, Constants.CLIMBER_MAX_ENCODER_VALUE);
+        // m_motor.setSoftLimit(SoftLimitDirection.kReverse, 0);
+        
+        m_motor.set(0);
+        ClimberPistonUnlock();
     }
 
     public void Up() 
@@ -117,9 +55,9 @@ public class Climber extends SubsystemBase
         ClimberPistonUnlock();
 
         // Give some time for the Solenoid to move out of the way
-        Timer.delay( 1 );
+     //   Timer.delay( 0.5 );
 
-        m_motor.set(-Constants.ClimberPower);
+        m_motor.set(Constants.ClimberPower);
     }
 
     public void Down() 
@@ -127,9 +65,9 @@ public class Climber extends SubsystemBase
         ClimberPistonUnlock();
 
         // Give some time for the Solenoid to move out of the way
-        Timer.delay( 1 );
+    //    Timer.delay( 0.5 );
 
-        m_motor.set(Constants.ClimberPower);
+        m_motor.set(-Constants.ClimberPower);
     }
 
     public void Stop() 
@@ -139,18 +77,13 @@ public class Climber extends SubsystemBase
         ClimberPistonLock();
     }
 
-    public void OverrideLimits( boolean bOverride )
-    {
-        m_bOverrideLimits = bOverride;
-    }
-
     public void ClimberPistonLock()
     {
-        m_climberSolenoid.set(Value.kForward);
+        m_climberSolenoid.set(Value.kReverse);
     }
 
     public void ClimberPistonUnlock()
     {
-        m_climberSolenoid.set(Value.kReverse);
+        m_climberSolenoid.set(Value.kForward);
     }
 }

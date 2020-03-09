@@ -73,7 +73,7 @@ public class Transport extends SubsystemBase
                 {
                     TurnAllOff();
                     m_State = States.Idle;
-
+System.out.println("Intake off");
                     AdvanceBalls();
                 }
                 break;
@@ -81,7 +81,7 @@ public class Transport extends SubsystemBase
 
             case AdvanceBalls:
             {
-                double dElapsedTime = m_StartTime - Timer.getFPGATimestamp();
+                double dElapsedTime = Timer.getFPGATimestamp()- m_StartTime;
 
                 // if (IsBeamBroken(4) || dElapsedTime >= Constants.TransportBallMoveTime )
                 if (dElapsedTime >= Constants.TransportBallMoveTime )
@@ -89,12 +89,15 @@ public class Transport extends SubsystemBase
                     m_transportMotorStage1.set( 0 );
                     m_transportMotorStage2.set( 0 );
                     m_transportMotorStage3.set( 0 );
+                    m_State = States.Idle;
                 }
 
-                if (IsBeamBroken( 4 ))
-                    m_State = States.Full;
-                else 
-                    m_State = States.Idle;
+                System.out.println( dElapsedTime );
+
+             //   if (IsBeamBroken( 4 ))
+               //     m_State = States.Full;
+               // else 
+               
         
             }
 
@@ -174,7 +177,7 @@ public class Transport extends SubsystemBase
         // Turn all motors off just in case 
         // If Ball already in stage 1, don't turn on intake.
 
-        System.out.println("Transport.TurnIntakeOn");
+       // System.out.println("Transport.TurnIntakeOn");
 
         if (IsBeamBroken( 0 ))
             return;
@@ -196,7 +199,10 @@ public class Transport extends SubsystemBase
     {
         // Turn all motors off just in case.
 
+        System.out.println("AdvanceBalls");
+
         TurnAllOff();
+
 
         if ((m_State == States.Full) || 
              !IsBeamBroken( 0 )) 

@@ -18,6 +18,8 @@ public class IntakeArm extends SubsystemBase
         m_intakeSolenoid = new DoubleSolenoid( Constants.CAN_PCM, 
                                                Constants.SOL_INTAKE_ARM_FORWARD, 
                                                Constants.SOL_INTAKE_ARM_REVERSE );
+       m_intakeSolenoid.set( Value.kReverse );
+                                            
     }
 
     public void IntakePistonDown()

@@ -13,12 +13,13 @@ import frc.robot.subsystems.Shooter;
 public class ShootCommand extends CommandBase 
 {
 
-    private final Shooter m_shooter;
+    private Shooter m_shooter;
     /**
      * Creates a new intakeInCommand. test
      */
     public ShootCommand(Shooter shooter) 
     {
+        System.out.println("Shoot const");
         // Use addRequirements() here to declare subsystem dependencies.
         m_shooter = shooter;
         addRequirements(m_shooter);
@@ -28,7 +29,8 @@ public class ShootCommand extends CommandBase
     @Override
     public void initialize() 
     {
-        m_shooter.SetRPM(m_shooter.maxRPM);
+        System.out.println("sh init");
+        m_shooter.SetPower(1);//RPM(m_shooter.maxRPM);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +43,7 @@ public class ShootCommand extends CommandBase
     @Override
     public void end(boolean interrupted) 
     {
-        m_shooter.SetRPM(0);
+        m_shooter.SetPower(0);
     }
 
     // Returns true when the command should end.

@@ -53,8 +53,12 @@ public final class Constants {
 
     // Other Constants
 
-    public static final int LED_STRIP_NUM_OF_LEDS = 64;
-    public static final int NUM_BALLS             = 5;
+    public static final int LED_STRIP_NUM_OF_LEDS  = 64;
+    public static final int NUM_BALLS              = 5;
+    public static final int FALCON_COUNT_PER_REV   = 2048;
+    public static final double FALCON_GEAR_RATIO   = 9.5;
+    public static final double WHEEL_CIRCUMFERENCE = Math.PI * 8;
+    public static final double COUNTS_PER_INCH     = (FALCON_COUNT_PER_REV * FALCON_GEAR_RATIO) / WHEEL_CIRCUMFERENCE;
 
     // Climber rough estimate based on:
     //      Spool Diameter      : 1.225" (guess)  [ Circumference: 3.85 ]
@@ -62,8 +66,8 @@ public final class Constants {
     //      Encoder Resolution  : 42 per rev
     //      Gear Box on Motor   : 20:1
 
-	public static final double CLIMBER_MAX_ENCODER_VALUE = 9800;     
-	public static final double CLIMBER_MIN_ENCODER_VALUE = 0;
+	public static final int CLIMBER_MAX_ENCODER_VALUE = 2000; // 9800;     
+	public static final int CLIMBER_MIN_ENCODER_VALUE = 0;
 
     // NEO Constants
     
@@ -71,17 +75,17 @@ public final class Constants {
 
     // Power Constants
 
-	public static final double TurretPower        = 0.2;
+	public static final double TurretPower        = 1.0;
     public static final double IntakePower        = 0.3;
-    public static final double TransportPower     = 0.75;
-    public static final double ClimberPower       = 0.25;
+    public static final double TransportPower     = 0.65;
+    public static final double ClimberPower       = 0.75;
     
     // Shooter Constants
 
     public static final int Shooter_MaxPower  = 1; 
     public static final int Shooter_MinPower  = -1;
     public static final int Shooter_MaxRPM    = 5700;
-    public static final double TransportBallMoveTime = 1.000;
+    public static final double TransportBallMoveTime = 0.075;
     
     // Pneumatics
     
@@ -89,6 +93,10 @@ public final class Constants {
     public static final int SOL_CLIMB_BRAKE_REVERSE = 1;
 
 	public static final int SOL_INTAKE_ARM_FORWARD  = 2;
-	public static final int SOL_INTAKE_ARM_REVERSE  = 3;
+    public static final int SOL_INTAKE_ARM_REVERSE  = 3;
+    
+    // LED Constants
 
+    public static final int LIMELIGHT_LED_OFF       = 0;
+    public static final int LIMELIGHT_LED_ON        = 1;
 }

@@ -96,7 +96,15 @@ public class TankDrive extends CommandBase
     @Override
     public void execute()
     {
-        m_driveTrain.drive(-m_kLeft.getAsDouble(), -m_kRight.getAsDouble());
+
+
+        double left = m_kLeft.getAsDouble() *0.75;
+        double right = m_kRight.getAsDouble() *0.75;
+
+        left = DeadBand( left );
+        right = DeadBand( right );
+
+        m_driveTrain.drive(-left, -right );
 
         // SmartDashboard.putNumber("FX04ROT", getTalonFX04Rotations());
         // SmartDashboard.putNumber("FX04RPM", getTalonFX04RPM());
@@ -112,7 +120,23 @@ public class TankDrive extends CommandBase
         // SmartDashboard.putNumber("FX05RPM", getTalonFX05RPM());
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    private double DeadBand(double left) {
+        if (left < 0)
+        {
+          if (left > -0.2)
+            return 0;
+        }
+        else
+        {
+            if (left < 0.2)
+             return 0;
+        }
+
+        return left;
+
+	}
+
+	// Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished()
     {

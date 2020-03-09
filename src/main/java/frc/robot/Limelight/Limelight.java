@@ -18,11 +18,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Limelight 
 {
 
-    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight-rosie");
+    NetworkTable      table;
+
+    // NetworkTableEntry ledMode;
+    NetworkTableEntry m_pipeline;
 
     public Limelight() 
     {
+        table    = NetworkTableInstance.getDefault().getTable("limelight-rosie");
+        // ledMode  = table.getEntry("ledMode");
+        m_pipeline = table.getEntry("pipeline");
         
+        // pipeline.setNumber(0);
+        // LEDMode(3);
+    }
+
+    public void LEDMode(int pipeline)
+    {
+        System.out.println(pipeline);
+        m_pipeline.setNumber(pipeline);
     }
 
     public LimelightData getLimeLightValues() 

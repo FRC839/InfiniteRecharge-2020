@@ -28,13 +28,8 @@ public class Shooter extends SubsystemBase
 
     public Shooter() 
     {
-        // m_motor.restoreFactoryDefaults();
-
-        /**
-         * In order to use PID functionality for a controller, a CANPIDController object
-         * is constructed by calling the getPIDController() method on an existing
-         * CANSparkMax object
-         */
+        m_motor.restoreFactoryDefaults();
+/*
         m_pidController = m_motor.getPIDController();
 
         // Encoder object created to display position values
@@ -57,7 +52,7 @@ public class Shooter extends SubsystemBase
         m_pidController.setOutputRange( kMinOutput, kMaxOutput );
 
         // display PID coefficients on SmartDashboard
-        
+  / *      
         SmartDashboard.putNumber("P Gain", kP);
         SmartDashboard.putNumber("I Gain", kI);
         SmartDashboard.putNumber("D Gain", kD);
@@ -65,16 +60,26 @@ public class Shooter extends SubsystemBase
         SmartDashboard.putNumber("Feed Forward", kFF);
         SmartDashboard.putNumber("Max Output", kMaxOutput);
         SmartDashboard.putNumber("Min Output", kMinOutput);
+    */
     }
 
     public void SetRPM( double RPM )     
     {
+        System.out.println(RPM);
+        if (RPM == 0)
+            m_motor.set(0);
+        else
+            m_motor.set(-1);
+        /*
+        System.out.print("rpm:");
+        System.out.println(rpm);
         double setPoint = Math.min( RPM, Constants.Shooter_MaxRPM );
 
         m_pidController.setReference( setPoint, ControlType.kVelocity);
 
         SmartDashboard.putNumber("Target Speed" , setPoint );
         SmartDashboard.putNumber("Current Speed", m_encoder.getVelocity() );
+        */
     }
 
 
@@ -83,12 +88,19 @@ public class Shooter extends SubsystemBase
 
     public void SetPower( double power )     
     {
+        m_motor.set(-power);
+/*
         double setPoint = Math.min( power * Constants.Shooter_MaxRPM, Constants.Shooter_MaxRPM );
+
+
+        System.out.print("power");
+        System.out.println(setPoint);
 
         m_pidController.setReference( setPoint, ControlType.kVelocity);
 
         SmartDashboard.putNumber("Target Speed" , setPoint );
         SmartDashboard.putNumber("Current Speed", m_encoder.getVelocity() );
+  */
     }    
   
 /*    
